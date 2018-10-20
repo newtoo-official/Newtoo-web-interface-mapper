@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>240</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -85,18 +85,19 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionPreferences"/>
+    <addaction name="actionOptions"/>
    </widget>
-   <widget class="QMenu" name="menuView">
+   <widget class="QMenu" name="menuWindow">
     <property name="title">
      <string>Window</string>
     </property>
     <addaction name="actionSource_code_output"/>
     <addaction name="actionHeader_output"/>
+    <addaction name="actionConversion_result"/>
    </widget>
    <addaction name="menuConverter"/>
    <addaction name="menuTools"/>
-   <addaction name="menuView"/>
+   <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -143,12 +144,20 @@
     <string>Header (.h) output</string>
    </property>
   </action>
-  <action name="actionPreferences">
+  <action name="actionOptions">
    <property name="text">
     <string>Options</string>
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="actionConversion_result">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Converter result</string>
    </property>
   </action>
  </widget>

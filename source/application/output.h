@@ -13,8 +13,12 @@ namespace webidl2cpp_application
         Q_OBJECT
 
     public:
-        explicit Output(QWidget *parent = 0);
+        explicit Output(QString title, QWidget *parent = 0);
         ~Output();
+
+    public slots:
+
+        void copyToClipboard();
 
     private:
         Ui::Output *ui;

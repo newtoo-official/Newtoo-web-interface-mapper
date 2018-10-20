@@ -63,7 +63,7 @@
    <property name="title">
     <string>Generator options</string>
    </property>
-   <widget class="QLabel" name="langLabel_2">
+   <widget class="QLabel" name="namespaceLabel">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -76,7 +76,7 @@
      <string>Namespace</string>
     </property>
    </widget>
-   <widget class="QLabel" name="langLabel_3">
+   <widget class="QLabel" name="exceptionTemplateClassLabel">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -89,7 +89,7 @@
      <string>Exception template class</string>
     </property>
    </widget>
-   <widget class="QLabel" name="langLabel_4">
+   <widget class="QLabel" name="stringPointerClassLabel">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -102,7 +102,7 @@
      <string>String pointer class</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="namespaceField">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -118,7 +118,7 @@
      <string>Type a namespace for use...</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="exceptionTemplateClassField">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -128,13 +128,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>RaisesException</string>
+     <string/>
     </property>
     <property name="maxLength">
      <number>255</number>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="stringPointerClassField">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -144,7 +144,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>DOMStringOrNull</string>
+     <string/>
     </property>
     <property name="maxLength">
      <number>255</number>
@@ -166,7 +166,7 @@
    <property name="title">
     <string>Preferences</string>
    </property>
-   <widget class="QComboBox" name="lang">
+   <widget class="QComboBox" name="langField">
     <property name="geometry">
      <rect>
       <x>160</x>

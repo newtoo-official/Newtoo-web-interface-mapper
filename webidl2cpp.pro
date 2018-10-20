@@ -20,7 +20,9 @@ HEADERS += \
     source/application/output.h \
     source/application/options.h \
     source/application/finish.h \
-    source/application/about.h
+    source/application/about.h \
+    source/shared/settings.h \
+    source/application/log.h
 
 SOURCES += \
     source/application/window.cpp \
@@ -28,11 +30,14 @@ SOURCES += \
     source/application/options.cpp \
     source/application/finish.cpp \
     source/application/about.cpp \
-    source/main.cpp
+    source/main.cpp \
+    source/shared/settings.cpp \
+    source/application/log.cpp
 
 RESOURCES += \
     resources.qrc
 
 DISTFILES += \
     resources/icon.png \
-    resources/app_icon.ico
+    resources/app_icon.ico \
+    source/core/todo.md
