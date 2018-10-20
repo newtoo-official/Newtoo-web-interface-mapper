@@ -10,68 +10,92 @@
     <height>171</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>381</width>
+    <height>171</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>381</width>
+    <height>171</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Converter result</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources.qrc">
+    <normaloff>:/about/app-icon</normaloff>:/about/app-icon</iconset>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
   <property name="modal">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
-  <widget class="QDialogButtonBox" name="bottom">
+  <widget class="QPlainTextEdit" name="log">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>130</y>
-     <width>341</width>
-     <height>32</height>
+     <x>10</x>
+     <y>10</y>
+     <width>361</width>
+     <height>121</height>
     </rect>
    </property>
-   <property name="locale">
-    <locale language="English" country="UnitedStates"/>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+   <property name="plainText">
+    <string/>
    </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Close</set>
+  </widget>
+  <widget class="QPushButton" name="showh">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>111</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Generated header</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="showcpp">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>140</y>
+     <width>131</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Generated source code</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="close">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Close</string>
    </property>
   </widget>
  </widget>
- <resources/>
- <connections>
-  <connection>
-   <sender>bottom</sender>
-   <signal>accepted()</signal>
-   <receiver>Finish</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>bottom</sender>
-   <signal>rejected()</signal>
-   <receiver>Finish</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
+ <connections/>
 </ui>
