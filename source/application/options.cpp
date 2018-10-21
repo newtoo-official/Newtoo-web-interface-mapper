@@ -8,6 +8,11 @@ namespace webidl2cpp_application
         ui(new Ui::Options)
     {
         ui->setupUi(this);
+
+        connect(ui->cancel, SIGNAL(clicked()), this, SLOT(hide()));
+        connect(ui->apply, SIGNAL(clicked()), this, SLOT(saveSettings()));
+        connect(ui->ok, SIGNAL(clicked()), this, SLOT(saveAndClose()));
+        connect(ui->restoreDefaults, SIGNAL(clicked()), this, SLOT(resetDefaults()));
     }
 
     std::string toUtf8(QString str)
@@ -32,6 +37,7 @@ namespace webidl2cpp_application
     void Options::resetDefaults()
     {
         mSettings.resetDefaults();
+        loadSettings();
     }
     void Options::saveAndClose()
     {
