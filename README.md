@@ -1,6 +1,26 @@
 # WebIDL to C++ converter
-Implementing web standarts is faster with this tool.  
-Just paste your WebIDL code and generate c++ source (.cpp) and header (.h)
+Introducing WebIDL2C++ – the first interface draft to real C++ code converter.  
+  
+WebIDL2C++ is the best solution for your standards-based project.  
+Just paste your WebIDL inteface and generate c++ source (.cpp) and header (.h) in two clicks  
+Implementing web standarts is faster with this tecnology.  
+# Features
+- Fully automated
+- All basic types, including const
+- Supported exception throwings
+- Supported regular & readonly attributes
+- Supported extended attributes
+- Copy constructor for every class
+- Customizable namespace
+- Automatic inclusion of class headers
+- Supported inheritance & partial interfaces
+- Supported static & raises exception functions
+- Automated private fields
+- Supported dictonaties
+- Supported enumerations
+- Supported pointers
+- Crossplatform GUI
+- MIT License
 ## Example
 This WebIDL interface
 ```webidl
