@@ -22,7 +22,7 @@ Implementing web standarts is faster with this tecnology.
 - Crossplatform GUI
 - MIT License
 ## Example
-This WebIDL interface
+WebIDL interface:
 ```webidl
 [Exposed=Window]
 interface Node : EventTarget {
@@ -51,7 +51,7 @@ partial interface Node {
   [CEReactions, Unscopable] void remove();
 }
 ```
-will turn to c++ header
+Generated C++ header:
 ```c++
 #pragma once
 #include "EventTarget.h"
@@ -93,7 +93,7 @@ protected: /* Auto generated class fields */
   NodeList mChildNodes;
 };
 ```
-and c++ source code
+Generated C++ source code:
 ```c++
 #include "Node.h"
 
