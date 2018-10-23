@@ -15,6 +15,7 @@ Implementing web standarts is faster with this tecnology.
 - Automatic inclusion of class headers
 - Supported inheritance & partial interfaces
 - Supported static & raises exception functions
+- Supported named constructor
 - Automated private fields
 - Supported dictonaties
 - Supported enumerations
