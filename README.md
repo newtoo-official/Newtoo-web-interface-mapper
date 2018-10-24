@@ -1,4 +1,4 @@
-![](https://habrastorage.org/webt/rx/mq/8d/rxmq8da2ssnnhuyv4xjx1eaw8ua.png)
+![](https://habrastorage.org/webt/b-/cy/79/b-cy79ic-ge1qh4apd2zhuwxjr4.png)
 # Features
 - Fully automated
 - All basic types, including const
