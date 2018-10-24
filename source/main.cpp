@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
     QApplication application(argc, argv);
-    webidl2cpp_application::Window appw;
+    NewtooWebInterfaceMapper_application::Window appw;
     appw.show();
 
     return application.exec();

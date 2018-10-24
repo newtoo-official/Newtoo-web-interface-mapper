@@ -1,6 +1,6 @@
 #include "settings.h"
 
-namespace webidl2cpp
+namespace NewtooWebInterfaceMapper
 {
     Settings::Settings() : mNamespace(initialNamespace()),
         mExceptionTemplateClass(initialExceptionTemplateClass()),

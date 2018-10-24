@@ -3,7 +3,7 @@
 
 #include "window.h"
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     Finish::Finish(Window* window, QWidget * parent) :
         QDialog(parent),
@@ -17,6 +17,8 @@ namespace webidl2cpp_application
         connect(ui->close, SIGNAL(clicked()), this, SLOT(hide()));
         connect(ui->showcpp, SIGNAL(clicked()), this, SLOT(showSource()));
         connect(ui->showh, SIGNAL(clicked()), this, SLOT(showHeader()));
+
+        log().post(QString("Mapper Core is currently in maintenance. Please, download the latest version at https://github.com/FlightBlaze/Newtoo-web-interface-mapper/releases"));
     }
 
     Window* Finish::window()

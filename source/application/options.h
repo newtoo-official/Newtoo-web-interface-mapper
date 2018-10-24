@@ -7,7 +7,7 @@ namespace Ui
 {
     class Options;
 }
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     class Options : public QDialog
     {
@@ -26,6 +26,6 @@ namespace webidl2cpp_application
 
     private:
         Ui::Options *ui;
-        webidl2cpp::Settings mSettings;
+        NewtooWebInterfaceMapper::Settings mSettings;
     };
 }

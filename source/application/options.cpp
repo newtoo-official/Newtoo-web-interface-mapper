@@ -1,7 +1,7 @@
 #include "options.h"
 #include "ui_options.h"
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     Options::Options(QWidget *parent) :
         QDialog(parent),

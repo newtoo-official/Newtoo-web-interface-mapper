@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace webidl2cpp
+namespace NewtooWebInterfaceMapper
 {
     typedef std::string StringItem;
 

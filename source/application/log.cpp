@@ -2,7 +2,7 @@
 
 #include <QDateTime>
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     Log::Log(QPlainTextEdit* aReference)
         : mReference(aReference)
@@ -20,6 +20,14 @@ namespace webidl2cpp_application
     {
         return ':';
     }
+    char Log::datetimeStart()
+    {
+        return '[';
+    }
+    char Log::datetimeEnd()
+    {
+        return ']';
+    }
     char Log::splitter()
     {
         return ' ';
@@ -29,18 +37,23 @@ namespace webidl2cpp_application
     {
         QDateTime dateTime;
 
-        text.append(dateTime.date().currentDate().day());
-        text.append(QChar::fromLatin1(dateSplitter()));
-        text.append(dateTime.date().currentDate().month());
-        text.append(QChar::fromLatin1(dateSplitter()));
-        text.append(dateTime.date().currentDate().year());
-        text.append(QChar::fromLatin1(splitter()));
-        text.append(dateTime.time().currentTime().hour());
-        text.append(QChar::fromLatin1(timeSplitter()));
-        text.append(dateTime.time().currentTime().minute());
-        text.append(QChar::fromLatin1(splitter()));
-        text.append(text);
-        text.append(QChar::fromLatin1(newlineSign()));
+        std::string ptext;
+        ptext += datetimeStart();
+        ptext += std::to_string(dateTime.date().currentDate().day());
+        ptext += dateSplitter();
+        ptext += std::to_string(dateTime.date().currentDate().month());
+        ptext += dateSplitter();
+        ptext += std::to_string(dateTime.date().currentDate().year());
+        ptext += splitter();
+        ptext += std::to_string(dateTime.time().currentTime().hour());
+        ptext += timeSplitter();
+        ptext += std::to_string(dateTime.time().currentTime().minute());
+        ptext += datetimeEnd();
+        ptext += splitter();
+        ptext += text.toStdString();
+        ptext += newlineSign();
+
+        mReference->appendPlainText(QString::fromStdString(ptext));
     }
 
     void Log::clear()

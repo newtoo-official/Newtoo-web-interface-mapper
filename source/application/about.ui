@@ -55,16 +55,16 @@
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>20</y>
-     <width>131</width>
-     <height>31</height>
+     <y>10</y>
+     <width>151</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">font: 75 9pt &quot;MS Shell Dlg 2&quot;; font-weight: bold;</string>
    </property>
    <property name="text">
-    <string>webidl2cpp</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Newtoo web interface&lt;br/&gt;mapper (GUI)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="summary">
@@ -77,7 +77,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;WebIDL to C++ Converter.&lt;/p&gt;&lt;p&gt;Version: 1.0&lt;/p&gt;&lt;p&gt;&lt;br/&gt;Created and designed by Dmitry Kozichev.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/FlightBlaze/webidl2cpp&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;www.github.com/FlightBlaze/webidl2cpp&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Newtoo web interface mapper&lt;/p&gt;&lt;p&gt;Version: 2.0&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/FlightBlaze/Newtoo-web-interface-mapper&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Learn more at Github&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

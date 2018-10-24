@@ -2,7 +2,7 @@
 
 #include <QPlainTextEdit>
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     class Log
     {
@@ -12,6 +12,8 @@ namespace webidl2cpp_application
         char newlineSign();
         char dateSplitter();
         char timeSplitter();
+        char datetimeStart();
+        char datetimeEnd();
         char splitter();
 
         void post(QString text);

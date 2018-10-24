@@ -174,4 +174,4 @@ void Node::remove()
 }
 ```
 ***
-License: [MIT](https://github.com/FlightBlaze/webidl2cpp/blob/master/LICENSE)
+License: [MIT](https://github.com/FlightBlaze/NewtooWebInterfaceMapper/blob/master/LICENSE)

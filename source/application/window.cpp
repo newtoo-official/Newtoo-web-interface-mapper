@@ -1,7 +1,7 @@
 #include "window.h"
 #include "ui_window.h"
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     Window::Window(QWidget *parent) :
         QMainWindow(parent),

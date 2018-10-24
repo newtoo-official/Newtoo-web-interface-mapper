@@ -3,7 +3,7 @@
 
 #include <QClipboard>
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     Output::Output(QString title, QWidget *parent) :
         QDialog(parent),

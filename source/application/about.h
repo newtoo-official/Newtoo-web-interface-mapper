@@ -6,7 +6,7 @@ namespace Ui
 {
     class About;
 }
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     class About : public QDialog
     {

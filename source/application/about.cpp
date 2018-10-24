@@ -1,7 +1,7 @@
 #include "about.h"
 #include "ui_about.h"
 
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
     About::About(QWidget *parent) :
         QDialog(parent),

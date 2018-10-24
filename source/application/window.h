@@ -11,7 +11,7 @@ namespace Ui
 {
     class Window;
 }
-namespace webidl2cpp_application
+namespace NewtooWebInterfaceMapper_application
 {
 
     class Window : public QMainWindow
