@@ -75,6 +75,7 @@
      <string>Mapper</string>
     </property>
     <addaction name="actionConvert"/>
+    <addaction name="actionConvert_save"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -161,6 +162,11 @@
    </property>
    <property name="text">
     <string>Converter result</string>
+   </property>
+  </action>
+  <action name="actionConvert_save">
+   <property name="text">
+    <string>Convert and save</string>
    </property>
   </action>
  </widget>

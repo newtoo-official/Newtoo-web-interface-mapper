@@ -45,5 +45,4 @@ DISTFILES += \
     resources/icon.png \
     resources/app_icon.ico \
     source/core/todo.md \
-    README.md \
-    resources/heading.png
+    README.md
