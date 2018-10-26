@@ -4,12 +4,15 @@ namespace NewtooWebInterfaceMapper_core
 {
 
     IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
-        : mDefinitions(this), mSettings(settings)
+        : mSettings(settings), mErrorCounter(0), mDefinitions(this)
     {
         DeclarationStringList list = declarationListFrom(text);
 
         for(unsigned i = 0; i < list.size(); i++)
+        {
+            header().append(list[i] + "\n");
             definitions().newDefinition(list[i]);
+        }
 
         serialize();
     }
@@ -19,6 +22,9 @@ namespace NewtooWebInterfaceMapper_core
     const char close_rule = '}';
     const char close_single_rule = ';';
     const char open_rule = '{';
+
+    const char whitespace = ' ';
+    const char newline = '\n';
 
     #define split_target() \
     list.push_back(target->substr(i + 1, target->size() - i - 1)); \
@@ -107,15 +113,24 @@ namespace NewtooWebInterfaceMapper_core
 
         list.pop_back(); // Удалить пустую строку
 
+        for(unsigned i = 0; i < list.size(); i++)
+        {
+            std::string& dec = list[i];
+
+            while(dec[0] == whitespace)
+                dec.erase(0, 1);
+            while(dec[dec.size() - 1] == whitespace)
+                dec.erase(dec.size() - 1, 1);
+
+            while(dec.find(newline) != std::string::npos)
+                dec = dec.replace(dec.find(newline), 1, "");
+        }
         return list;
     }
 
     void IDL::serialize()
     {
-        header() = "Hello!";
-        source() = "Goodbie!";
-        log().push_back("Please note, that this is only test conversion");
-        log().push_back("Successful generated hello!");
+        log().push_back("Finished with " + std::to_string(mErrorCounter) + " errors.");
     }
 
     std::string& IDL::header()

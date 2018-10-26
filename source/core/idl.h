@@ -22,13 +22,15 @@ namespace NewtooWebInterfaceMapper_core
         std::string& source();
         Log& log();
 
-    private:
-
         DefinitionList& definitions();
+
+    private:
 
         void serialize();
 
         NewtooWebInterfaceMapper::Settings& mSettings;
+
+        unsigned short mErrorCounter;
 
         std::string mHeader;
         std::string mSource;

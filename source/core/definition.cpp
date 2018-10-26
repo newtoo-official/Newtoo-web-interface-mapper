@@ -2,16 +2,9 @@
 
 namespace NewtooWebInterfaceMapper_core
 {
-    Definition::Definition(DefinitionType aType, IDL* aIdl, std::string decl)
+    Definition::Definition(DefinitionType aType, IDL* aIdl)
         :mType(aType), mIdl(aIdl)
-    {
-        decl.clear();
-    }
-
-    Definition* Definition::create(std::string text, IDL* idl)
-    {
-
-    }
+    {}
 
     DefinitionType Definition::type() const
     {
@@ -21,6 +14,32 @@ namespace NewtooWebInterfaceMapper_core
     IDL* Definition::idl() const
     {
         return mIdl;
+    }
+
+    const char open_rule = '{';
+
+    DefinitionType Definition::defineType(std::string decl)
+    {
+        if(decl.find(open_rule) != std::string::npos)
+        {
+            std::string pre = decl.substr(0, decl.find(open_rule));
+
+            if(pre.find("interface") != std::string::npos)
+                return INTERFACE;
+            else if(pre.find("dictonary") != std::string::npos)
+                return DICTONARY;
+            else if(pre.find("enum") != std::string::npos)
+                return ENUMERATION;
+        } else
+        {
+            if(decl.find("typedef") == 0)
+                return TYPEDEFINE;
+            else if(decl.find("implements") != std::string::npos)
+                return IMPLEMENTS;
+            else if(decl.find("includes") != std::string::npos)
+                return INCLUDES;
+        }
+        return UNKNOWN_TYPE;
     }
 
     std::string Definition::serializeHeader()
@@ -34,46 +53,5 @@ namespace NewtooWebInterfaceMapper_core
     void Definition::cascade()
     {
 
-    }
-
-    std::string& Definition::copyConstructorStart()
-    {
-        return mCopyConstructorStart;
-    }
-    std::string& Definition::copyConstructorInitFields()
-    {
-        return mCopyConstructorInitFields;
-    }
-    std::string& Definition::copyConstructorEnd()
-    {
-        return mCopyConstructorEnd;
-    }
-    std::string& Definition::headerStart()
-    {
-        return mHeaderStart;
-    }
-    std::string& Definition::headerInherit()
-    {
-        return mHeaderInherit;
-    }
-    std::string& Definition::headerPublic()
-    {
-        return mHeaderPublic;
-    }
-    std::string& Definition::headerPublicAppendix()
-    {
-        return mHeaderPublicAppendix;
-    }
-    std::string& Definition::headerPrivate()
-    {
-        return mHeaderPrivate;
-    }
-    std::string& Definition::headerEnd()
-    {
-        return mHeaderEnd;
-    }
-    std::string& Definition::source()
-    {
-        return mSource;
     }
 }
