@@ -15,6 +15,11 @@ namespace NewtooWebInterfaceMapper_application
         connect(ui->restoreDefaults, SIGNAL(clicked()), this, SLOT(resetDefaults()));
     }
 
+    NewtooWebInterfaceMapper::Settings& Options::settings()
+    {
+        return mSettings;
+    }
+
     std::string toUtf8(QString str)
     {
         return std::string(str.toUtf8().constData());

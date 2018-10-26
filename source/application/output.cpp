@@ -16,6 +16,11 @@ namespace NewtooWebInterfaceMapper_application
         connect(ui->close, SIGNAL(clicked()), this, SLOT(hide()));
     }
 
+    void Output::setText(std::string text)
+    {
+        ui->text->setPlainText(QString::fromStdString(text));
+    }
+
     void Output::copyToClipboard()
     {
         QApplication::clipboard()->setText(ui->text->toPlainText());

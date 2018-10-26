@@ -16,6 +16,8 @@ namespace NewtooWebInterfaceMapper_application
         explicit Output(QString title, QWidget *parent = 0);
         ~Output();
 
+        void setText(std::string text);
+
     public slots:
 
         void copyToClipboard();

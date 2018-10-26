@@ -24,7 +24,8 @@ HEADERS += \
     source/shared/settings.h \
     source/application/log.h \
     source/core/definition.h \
-    source/core/idl.h
+    source/core/idl.h \
+    source/core/definitionlist.h
 
 SOURCES += \
     source/application/window.cpp \
@@ -36,7 +37,8 @@ SOURCES += \
     source/shared/settings.cpp \
     source/application/log.cpp \
     source/core/definition.cpp \
-    source/core/idl.cpp
+    source/core/idl.cpp \
+    source/core/definitionlist.cpp
 
 RESOURCES += \
     resources.qrc

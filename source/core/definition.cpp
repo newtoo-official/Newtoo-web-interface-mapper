@@ -31,4 +31,49 @@ namespace NewtooWebInterfaceMapper_core
     {
         return nullstr;
     }
+    void Definition::cascade()
+    {
+
+    }
+
+    std::string& Definition::copyConstructorStart()
+    {
+        return mCopyConstructorStart;
+    }
+    std::string& Definition::copyConstructorInitFields()
+    {
+        return mCopyConstructorInitFields;
+    }
+    std::string& Definition::copyConstructorEnd()
+    {
+        return mCopyConstructorEnd;
+    }
+    std::string& Definition::headerStart()
+    {
+        return mHeaderStart;
+    }
+    std::string& Definition::headerInherit()
+    {
+        return mHeaderInherit;
+    }
+    std::string& Definition::headerPublic()
+    {
+        return mHeaderPublic;
+    }
+    std::string& Definition::headerPublicAppendix()
+    {
+        return mHeaderPublicAppendix;
+    }
+    std::string& Definition::headerPrivate()
+    {
+        return mHeaderPrivate;
+    }
+    std::string& Definition::headerEnd()
+    {
+        return mHeaderEnd;
+    }
+    std::string& Definition::source()
+    {
+        return mSource;
+    }
 }

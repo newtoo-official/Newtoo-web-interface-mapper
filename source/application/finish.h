@@ -12,6 +12,13 @@ namespace NewtooWebInterfaceMapper_application
 {
     class Window;
 
+    enum FinishType
+    {
+        CONVERTED_AND_SAVED,
+        CONVERTED,
+        INITIAL
+    };
+
     class Finish : public QDialog
     {
         Q_OBJECT
@@ -19,6 +26,9 @@ namespace NewtooWebInterfaceMapper_application
     public:
         explicit Finish(Window* window, QWidget *parent = 0);
         ~Finish();
+
+        FinishType type() const;
+        void setType(FinishType aType);
 
         Window* window();
         Log& log();
@@ -29,8 +39,12 @@ namespace NewtooWebInterfaceMapper_application
         void showSource();
 
     private:
+
+        void updateControls();
+
         Ui::Finish *ui;
 
+        FinishType mType;
         Window* mWindow;
         Log mLog;
     };

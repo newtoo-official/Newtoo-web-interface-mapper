@@ -2,6 +2,18 @@
 
 namespace NewtooWebInterfaceMapper_core
 {
+
+    IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
+        : mDefinitions(this), mSettings(settings)
+    {
+        DeclarationStringList list = declarationListFrom(text);
+
+        for(unsigned i = 0; i < list.size(); i++)
+            definitions().newDefinition(list[i]);
+
+        serialize();
+    }
+
     const char quote_char = '\"';
     const char alternative_quote = '\'';
     const char close_rule = '}';
@@ -96,5 +108,31 @@ namespace NewtooWebInterfaceMapper_core
         list.pop_back(); // Удалить пустую строку
 
         return list;
+    }
+
+    void IDL::serialize()
+    {
+        header() = "Hello!";
+        source() = "Goodbie!";
+        log().push_back("Please note, that this is only test conversion");
+        log().push_back("Successful generated hello!");
+    }
+
+    std::string& IDL::header()
+    {
+        return mHeader;
+    }
+    std::string& IDL::source()
+    {
+        return mSource;
+    }
+    Log& IDL::log()
+    {
+        return mLog;
+    }
+
+    DefinitionList& IDL::definitions()
+    {
+        return mDefinitions;
     }
 }

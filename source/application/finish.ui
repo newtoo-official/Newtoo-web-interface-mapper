@@ -96,7 +96,7 @@
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="openfolder">
    <property name="enabled">
     <bool>false</bool>
    </property>

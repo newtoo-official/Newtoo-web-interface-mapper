@@ -165,6 +165,9 @@
    </property>
   </action>
   <action name="actionConvert_save">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Convert and save</string>
    </property>

@@ -1,6 +1,8 @@
 #include "window.h"
 #include "ui_window.h"
 
+#include "../core/idl.h"
+
 namespace NewtooWebInterfaceMapper_application
 {
     Window::Window(QWidget *parent) :
@@ -85,11 +87,41 @@ namespace NewtooWebInterfaceMapper_application
                                    : ui->actionSource_code_output->setChecked(true);
         finish()->isHidden() ? ui->actionConversion_result->setChecked(false)
                              : ui->actionConversion_result->setChecked(true);
+
+        switch(finish()->type())
+        {
+            case FinishType::CONVERTED_AND_SAVED:
+            {
+                ui->actionHeader_output->setDisabled(true);
+                ui->actionSource_code_output->setDisabled(true);
+                break;
+            }
+            case FinishType::INITIAL:
+            {
+                ui->actionHeader_output->setDisabled(true);
+                ui->actionSource_code_output->setDisabled(true);
+                break;
+            }
+            case FinishType::CONVERTED:
+            {
+            ui->actionHeader_output->setDisabled(false);
+            ui->actionSource_code_output->setDisabled(false);
+                break;
+            }
+        }
     }
 
     void Window::convert()
     {
-        // convert
+        NewtooWebInterfaceMapper_core::IDL idl(ui->input->toPlainText().toStdString(),
+                                               options()->settings());
+        headerOutput()->setText(idl.header());
+        sourceOutput()->setText(idl.source());
+
+        for(unsigned i = 0; i < idl.log().size(); i++)
+            finish()->log().post(QString::fromStdString(idl.log()[i]));
+
+        finish()->setType(FinishType::CONVERTED);
         finish()->show();
     }
 

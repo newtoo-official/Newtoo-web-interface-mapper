@@ -8,6 +8,7 @@ namespace NewtooWebInterfaceMapper_application
     Finish::Finish(Window* window, QWidget * parent) :
         QDialog(parent),
         ui(new Ui::Finish),
+        mType(INITIAL),
         mWindow(window),
         mLog(0)
     {
@@ -18,7 +19,19 @@ namespace NewtooWebInterfaceMapper_application
         connect(ui->showcpp, SIGNAL(clicked()), this, SLOT(showSource()));
         connect(ui->showh, SIGNAL(clicked()), this, SLOT(showHeader()));
 
-        log().post(QString("Mapper Core is currently in maintenance. Please, download the latest version at https://github.com/FlightBlaze/Newtoo-web-interface-mapper/releases"));
+        updateControls();
+    }
+
+    FinishType Finish::type() const
+    {
+        return mType;
+    }
+    void Finish::setType(FinishType aType)
+    {
+        mType = aType;
+        window()->headerOutput()->hide();
+        window()->sourceOutput()->hide();
+        updateControls();
     }
 
     Window* Finish::window()
@@ -37,6 +50,34 @@ namespace NewtooWebInterfaceMapper_application
     void Finish::showSource()
     {
         window()->showSourceOutput();
+    }
+
+    void Finish::updateControls()
+    {
+        switch(type())
+        {
+            case CONVERTED_AND_SAVED:
+            {
+                ui->showcpp->setDisabled(true);
+                ui->showh->setDisabled(true);
+                ui->openfolder->setDisabled(false);
+                break;
+            }
+            case CONVERTED:
+            {
+                ui->showcpp->setDisabled(false);
+                ui->showh->setDisabled(false);
+                ui->openfolder->setDisabled(true);
+                break;
+            }
+            case INITIAL:
+            {
+                ui->showcpp->setDisabled(true);
+                ui->showh->setDisabled(true);
+                ui->openfolder->setDisabled(true);
+                break;
+            }
+        }
     }
 
     Finish::~Finish()

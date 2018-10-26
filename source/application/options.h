@@ -17,6 +17,8 @@ namespace NewtooWebInterfaceMapper_application
         explicit Options(QWidget *parent = 0);
         ~Options();
 
+        NewtooWebInterfaceMapper::Settings& settings();
+
     public slots:
 
         void loadSettings();
