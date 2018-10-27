@@ -24,6 +24,8 @@ namespace NewtooWebInterfaceMapper_core
 
         DefinitionList& definitions();
 
+        void error(std::string text);
+
     private:
 
         void serialize();

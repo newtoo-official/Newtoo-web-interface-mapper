@@ -29,6 +29,10 @@ namespace NewtooWebInterfaceMapper_core
 
         static DefinitionType defineType(std::string decl);
 
+        /*
+            Тут какой-то странный баг с этими виртуальными функциями. Они не переназначаются.
+        */
+
         virtual std::string serializeHeader();
         virtual std::string serializeSource();
         virtual void cascade();

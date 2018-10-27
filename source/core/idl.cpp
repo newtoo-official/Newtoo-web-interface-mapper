@@ -9,10 +9,7 @@ namespace NewtooWebInterfaceMapper_core
         DeclarationStringList list = declarationListFrom(text);
 
         for(unsigned i = 0; i < list.size(); i++)
-        {
-            header().append(list[i] + "\n");
             definitions().newDefinition(list[i]);
-        }
 
         serialize();
     }
@@ -23,6 +20,7 @@ namespace NewtooWebInterfaceMapper_core
     const char close_single_rule = ';';
     const char open_rule = '{';
 
+    const char tab = '	';
     const char whitespace = ' ';
     const char newline = '\n';
 
@@ -124,12 +122,17 @@ namespace NewtooWebInterfaceMapper_core
 
             while(dec.find(newline) != std::string::npos)
                 dec = dec.replace(dec.find(newline), 1, "");
+
+            while(dec.find(tab) != std::string::npos)
+                dec = dec.replace(dec.find(tab), 1, "");
         }
         return list;
     }
 
     void IDL::serialize()
     {
+        definitions().cascade();
+        definitions().serialize();
         log().push_back("Finished with " + std::to_string(mErrorCounter) + " errors.");
     }
 
@@ -144,6 +147,12 @@ namespace NewtooWebInterfaceMapper_core
     Log& IDL::log()
     {
         return mLog;
+    }
+
+    void IDL::error(std::string text)
+    {
+        log().push_back(text);
+        mErrorCounter++;
     }
 
     DefinitionList& IDL::definitions()

@@ -15,6 +15,8 @@ namespace NewtooWebInterfaceMapper_core
             case INTERFACE:
             {
                 mList.push_back(Interface(mIdl, text));
+                Interface& i = (Interface&)mList.back();
+                idl()->log().push_back(i.serializeSource_Interface());
                 break;
             }
             case DICTONARY:

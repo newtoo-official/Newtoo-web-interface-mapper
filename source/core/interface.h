@@ -1,6 +1,7 @@
 #pragma once
 
 #include "definition.h"
+#include "extattrmap.h"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -13,35 +14,43 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string& copyConstructorStart();
         std::string& copyConstructorInitFields();
+        std::string& copyConstructorInitFieldsAppendix();
         std::string& copyConstructorEnd();
         std::string& headerStart();
         std::string& headerInherit();
         std::string& headerPublic();
         std::string& headerPublicAppendix();
         std::string& headerPrivate();
+        std::string& headerPrivateAppendix();
         std::string& headerEnd();
         std::string& source();
 
-         std::string serializeHeader() override;
+        std::string serializeHeader() override;
         /*
-            mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorEnd + mSource
+            mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
+            + mCopyConstructorEnd + mSource
         */
 
         std::string serializeSource() override;
         /*
             mHeaderStart + mHeaderInherit + headerPublicPrefix() + mHeaderPublic + mHeaderPublicAppendix
-            + mHeaderPrivate + mHeaderEnd
+            + mHeaderPrivate + mHeaderPrivateAppendix + mHeaderEnd
         */
+
+        std::string serializeHeader_Interface();
+        std::string serializeSource_Interface();
 
         void cascade() override;
 
-        void append(std::string partialInner); // mHeaderPublicAppendix += partialInner
+        void append(std::string partialHeaderPublic, std::string partialHeaderPrivate,
+                    std::string partialCopyConstructorInitFields, std::string partialSource);
         /*
             Нужен, чтобы объединять все частичные определения воедино через DefinitionList::cascade()
             Находин он нужное определение через DefinitionList::findDefinition(...);
         */
 
-        void inviteAttribute(std::string type, std::string name);
+        void addAttribute(bool isReadOnly, ExtAttrMap& extattrs, std::string& type,
+                          std::string& identifer);
         /*
             Сделать этот класс хостом атрибута. Это означает, что для атрибута будет создано
             приватное поле, которое он будет возращать.
@@ -65,19 +74,21 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string mInterfaceName;
 
-        std::string mCopyConstructorStart;           // ex. Object::Object(Object& ref)
-        std::string mCopyConstructorInitFields;      // ex. : mParent(0)
-        std::string mCopyConstructorEnd;             // ex. {}
-        std::string mHeaderStart;                    // ex. class Object
-        std::string mHeaderInherit;                  // ex. : public AbstractObject
-        std::string mHeaderPublic;                   // ex. Object* parent() const;
-        std::string mHeaderPublicAppendix;           // ex. void run();
-        std::string mHeaderPrivate;                  // ex. private: Object* mParent;
-        std::string mHeaderEnd;                      // ex. };
-        std::string mSource;                         // ex. Object* Object::parent const
-                                                     //     { return mParent;}
-                                                     //     void Object::run()
-                                                     //     {}
+        std::string mCopyConstructorStart;              // ex. Object::Object(Object& ref)
+        std::string mCopyConstructorInitFields;         // ex. : mParent(0)
+        std::string mCopyConstructorInitFieldsAppendix;
+        std::string mCopyConstructorEnd;                // ex. {}
+        std::string mHeaderStart;                       // ex. class Object
+        std::string mHeaderInherit;                     // ex. : public AbstractObject
+        std::string mHeaderPublic;                      // ex. Object* parent() const;
+        std::string mHeaderPublicAppendix;              // ex. void run();
+        std::string mHeaderPrivate;                     // ex. private: Object* mParent;
+        std::string mHeaderPrivateAppendix;
+        std::string mHeaderEnd;                         // ex. };
+        std::string mSource;                            // ex. Object* Object::parent const
+                                                        //     { return mParent;}
+                                                        //     void Object::run()
+                                                        //     {}
 
         std::string headerPublicPrefix();
 
