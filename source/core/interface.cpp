@@ -2,12 +2,58 @@
 #include "idl.h"
 #include "iostream"
 
+#define copyConstructorStartDict interfaceName() + "::" + interfaceName() + '(' \
+    + interfaceName() + "& ref)"
+
+#define headerPublicPrefixCopyConstructorDict "    " + interfaceName() + '(' + interfaceName() \
+    + "& ref);\n"
+
 namespace NewtooWebInterfaceMapper_core
 {
+
     Interface::Interface(IDL* aIdl, std::string decl)
         :Definition(INTERFACE, aIdl), mIsPartial(false)
     {
+        // Назначить название интерфейса
+        std::size_t nameIndex = decl.find(' ');
+        nameIndex++;
+        std::size_t inheritsIndex = decl.find(':');
+        std::size_t openBracketIndex = decl.find('{');
+        if(inheritsIndex == std::string::npos)
+            mInterfaceName = decl.substr(nameIndex, openBracketIndex - nameIndex);
+        else
+        {
+            mInterfaceName = decl.substr(nameIndex, inheritsIndex - nameIndex);
+        }
+        if(mInterfaceName[mInterfaceName.size() - 1] == ' ')
+            mInterfaceName.erase(mInterfaceName.size() - 1);
 
+        mHeaderStart = "class " + mInterfaceName;
+
+        // Добавить конструктор копирования
+        mHeaderPublicPrefix = "{\npublic:\n";
+        mHeaderPublicPrefix += headerPublicPrefixCopyConstructorDict;
+
+        // Назначить наследование
+        if(inheritsIndex != std::string::npos)
+        {
+            std::string inherits = decl.substr(inheritsIndex + 1, openBracketIndex - inheritsIndex - 1);
+
+            while(inherits.find(' ') != std::string::npos)
+                inherits = inherits.replace(inherits.find(' '), 1, "");
+
+            mHeaderInherit = " : public " + inherits + '\n';
+        }
+
+        // Добавить реализацию конструктора копирования
+        mCopyConstructorStart = copyConstructorStartDict;
+        mCopyConstructorEnd = "\n{}\n\n";
+
+        //Добавить приватные поля
+        mHeaderPrivate = "\nprivate:\n";
+
+        //Добавить окончание
+        mHeaderEnd = "\n};";
     }
 
     std::string& Interface::interfaceName()
@@ -43,6 +89,10 @@ namespace NewtooWebInterfaceMapper_core
     {
         return mHeaderPublic;
     }
+    std::string& Interface::headerPublicPrefix()
+    {
+        return mHeaderPublicPrefix;
+    }
     std::string& Interface::headerPublicAppendix()
     {
         return mHeaderPublicAppendix;
@@ -66,13 +116,27 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string Interface::serializeHeader_Interface()
     {
-        return mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
-                + mCopyConstructorEnd + mSource;
-    }
-    std::string Interface::serializeSource_Interface()
-    {
         return mHeaderStart + mHeaderInherit + headerPublicPrefix() + mHeaderPublic
                 + mHeaderPublicAppendix + mHeaderPrivate + mHeaderPrivateAppendix + mHeaderEnd;
+    }
+
+    void adoptPartiallyAddedInitFields(std::string& initFields, std::string& initFieldsAppendix)
+    {
+        if(initFieldsAppendix.find(" : ") == 0)
+            initFieldsAppendix.erase(0, 4);
+        while(initFieldsAppendix.find(" : ") != std::string::npos)
+            initFieldsAppendix.replace(initFieldsAppendix.find(" : "),
+                                                       1, "");
+        if(!initFieldsAppendix.empty() and initFields.empty())
+            initFields += " : ";
+    }
+
+    std::string Interface::serializeSource_Interface()
+    {
+        adoptPartiallyAddedInitFields(mCopyConstructorInitFields, mCopyConstructorInitFieldsAppendix);
+
+        return mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
+                + mCopyConstructorEnd + mSource;
     }
 
     std::string Interface::serializeHeader()
@@ -200,11 +264,6 @@ namespace NewtooWebInterfaceMapper_core
 
             }
         }
-    }
-
-    std::string Interface::headerPublicPrefix()
-    {
-        return "{\n    public:\n";
     }
 
     bool Interface::isPartial() const

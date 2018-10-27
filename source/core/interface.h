@@ -19,6 +19,7 @@ namespace NewtooWebInterfaceMapper_core
         std::string& headerStart();
         std::string& headerInherit();
         std::string& headerPublic();
+        std::string& headerPublicPrefix();
         std::string& headerPublicAppendix();
         std::string& headerPrivate();
         std::string& headerPrivateAppendix();
@@ -27,14 +28,14 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string serializeHeader() override;
         /*
-            mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
-            + mCopyConstructorEnd + mSource
+            mHeaderStart + mHeaderInherit + headerPublicPrefix() + mHeaderPublic + mHeaderPublicAppendix
+            + mHeaderPrivate + mHeaderPrivateAppendix + mHeaderEnd
         */
 
         std::string serializeSource() override;
         /*
-            mHeaderStart + mHeaderInherit + headerPublicPrefix() + mHeaderPublic + mHeaderPublicAppendix
-            + mHeaderPrivate + mHeaderPrivateAppendix + mHeaderEnd
+            mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
+            + mCopyConstructorEnd + mSource
         */
 
         std::string serializeHeader_Interface();
@@ -90,7 +91,7 @@ namespace NewtooWebInterfaceMapper_core
                                                         //     void Object::run()
                                                         //     {}
 
-        std::string headerPublicPrefix();
+        std::string mHeaderPublicPrefix;
 
         bool mIsPartial;
     };
