@@ -8,15 +8,19 @@ namespace NewtooWebInterfaceMapper_core
         :mIdl(aIdl)
     {}
 
+    DefinitionList::~DefinitionList()
+    {
+        for(unsigned i = 0; i < mList.size(); i++)
+            delete mList[i];
+    }
+
     void DefinitionList::newDefinition(std::string text)
     {
         switch(Definition::defineType(text))
         {
             case INTERFACE:
             {
-                mList.push_back(Interface(mIdl, text));
-                Interface& i = (Interface&)mList.back();
-                idl()->log().push_back(i.serializeSource_Interface());
+                mList.push_back(new Interface(mIdl, text));
                 break;
             }
             case DICTONARY:
@@ -49,26 +53,26 @@ namespace NewtooWebInterfaceMapper_core
     void DefinitionList::serialize()
     {
         for(unsigned i = 0; i < mList.size(); i++)
-            idl()->header() += mList[i].serializeHeader();
+            idl()->header() += mList[i]->serializeHeader();
 
         for(unsigned i = 0; i < mList.size(); i++)
-            idl()->source() += mList[i].serializeSource();
+            idl()->source() += mList[i]->serializeSource();
     }
 
     void DefinitionList::cascade()
     {
         for(unsigned i = 0; i < mList.size(); i++)
-            mList[i].cascade();
+            mList[i]->cascade();
     }
 
     Interface* DefinitionList::findInterface(std::string name)
     {
         for(unsigned i = 0; i < mList.size(); i++)
         {
-            if(mList[i].type() != INTERFACE)
+            if(mList[i]->type() != INTERFACE)
                 continue;
 
-            Interface* in = (Interface*)&mList[i];
+            Interface* in = (Interface*)mList[i];
 
             if(in->interfaceName() == name)
                 return in;

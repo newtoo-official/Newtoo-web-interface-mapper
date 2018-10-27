@@ -6,6 +6,9 @@ namespace NewtooWebInterfaceMapper_core
         :mType(aType), mIdl(aIdl)
     {}
 
+    Definition::~Definition()
+    {}
+
     DefinitionType Definition::type() const
     {
         return mType;

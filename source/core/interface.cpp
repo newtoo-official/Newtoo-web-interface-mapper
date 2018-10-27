@@ -1,5 +1,6 @@
 #include "interface.h"
 #include "idl.h"
+#include "iostream"
 
 namespace NewtooWebInterfaceMapper_core
 {

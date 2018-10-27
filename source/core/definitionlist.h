@@ -12,6 +12,7 @@ namespace NewtooWebInterfaceMapper_core
     {
     public:
         DefinitionList(IDL* aIdl);
+        ~DefinitionList();
 
         void newDefinition(std::string text);
         void serialize();
@@ -24,7 +25,7 @@ namespace NewtooWebInterfaceMapper_core
         IDL* idl() const;
 
     private:
-        std::vector<Definition> mList;
+        std::vector<Definition*> mList;
         IDL* mIdl;
     };
 }

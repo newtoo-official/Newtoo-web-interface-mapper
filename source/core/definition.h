@@ -24,6 +24,7 @@ namespace NewtooWebInterfaceMapper_core
     public:
         Definition(DefinitionType aType, IDL* aIdl);
         DefinitionType type() const;
+        virtual ~Definition();
 
         IDL* idl() const;
 
