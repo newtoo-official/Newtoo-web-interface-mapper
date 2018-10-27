@@ -16,12 +16,14 @@ namespace NewtooWebInterfaceMapper_core
         ExtAttr* sameObject();
         ExtAttr* newObject();
 
+        std::vector<ExtAttr>& list();
+
     private:
-        ExtAttr* mNamedContructor;
-        ExtAttr* mConstructor;
-        ExtAttr* mCEReactions;
-        ExtAttr* mSameObject;
-        ExtAttr* mNewObject;
+        unsigned long mNamedContructor;
+        unsigned long mConstructor;
+        unsigned long mCEReactions;
+        unsigned long mSameObject;
+        unsigned long mNewObject;
 
         std::vector<ExtAttr> mList;
     };

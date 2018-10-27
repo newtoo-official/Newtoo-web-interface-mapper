@@ -1,6 +1,6 @@
 #include "interface.h"
 #include "idl.h"
-#include "iostream"
+#include "function.h"
 
 #define copyConstructorStartDict interfaceName() + "::" + interfaceName() + '(' \
     + interfaceName() + "& ref)"
@@ -11,9 +11,38 @@
 namespace NewtooWebInterfaceMapper_core
 {
 
+    const char tab[] = "    ";
+
+    std::string constructorArguments(const std::string original, IDL* idl)
+    {
+        std::string str = original;
+        std::size_t argsIndex = str.find('(');
+        if(argsIndex != std::string::npos)
+        {
+            argsIndex++;
+            str = str.substr(argsIndex, str.size() - argsIndex - 2);
+            str = Function::convertArguments(str, idl);
+            return str;
+        }
+        return "";
+    }
+
     Interface::Interface(IDL* aIdl, std::string decl)
         :Definition(INTERFACE, aIdl), mIsPartial(false)
     {
+        // Назначить дополнительные параметры
+        std::size_t extAttrEnd = decl.find(']');
+        std::string extAttrString;
+        if(extAttrEnd != std::string::npos)
+        {
+            extAttrString = decl.substr(1, extAttrEnd);
+            decl.erase(0, extAttrEnd + 1);
+        }
+
+        // Удалить пробелы, чтобы правильно назначить название интерфейса
+        while(decl.find(' ') == 0)
+            decl.erase(0, 1);
+
         // Назначить название интерфейса
         std::size_t nameIndex = decl.find(' ');
         nameIndex++;
@@ -30,9 +59,30 @@ namespace NewtooWebInterfaceMapper_core
 
         mHeaderStart = "class " + mInterfaceName;
 
+        // Создать карту дополнительных параметров
+        ExtAttrMap extAttrMap(extAttrString);
+
+        // Добавить конструктор
+        if(extAttrMap.constructor() != 0)
+        {
+            for(unsigned i = 0; i < extAttrMap.list().size(); i++)
+            {
+                if(extAttrMap.list()[i].type() != CONSTRUCTOR_TYPE)
+                    continue;
+
+                std::string args = constructorArguments(extAttrMap.list()[i].name(), aIdl);
+                mSource += mInterfaceName + "::" + mInterfaceName + "("+args+")\n{\n\n}\n\n";
+                mHeaderPublic += tab + mInterfaceName + "(" + args + ");\n";
+            }
+        }
+
         // Добавить конструктор копирования
         mHeaderPublicPrefix = "{\npublic:\n";
         mHeaderPublicPrefix += headerPublicPrefixCopyConstructorDict;
+
+        // Добавить конструктор по-умолчанию
+        mHeaderPublic += tab + mInterfaceName + "();\n";
+        mSource += mInterfaceName + "::" + mInterfaceName + "()\n{\n\n}\n\n";
 
         // Назначить наследование
         if(inheritsIndex != std::string::npos)
@@ -43,17 +93,20 @@ namespace NewtooWebInterfaceMapper_core
                 inherits = inherits.replace(inherits.find(' '), 1, "");
 
             mHeaderInherit = " : public " + inherits + '\n';
+
+            mCopyConstructorInitFields = " : " + inherits + "(ref)";
         }
 
         // Добавить реализацию конструктора копирования
         mCopyConstructorStart = copyConstructorStartDict;
         mCopyConstructorEnd = "\n{}\n\n";
 
-        //Добавить приватные поля
+        // Добавить приватные поля
         mHeaderPrivate = "\nprivate:\n";
 
-        //Добавить окончание
-        mHeaderEnd = "\n};";
+        // Добавить окончание
+        mHeaderEnd = "\n};\n\n";
+
     }
 
     std::string& Interface::interfaceName()
@@ -202,38 +255,6 @@ namespace NewtooWebInterfaceMapper_core
     std::size_t typeEndIndex(std::string& attributeAfter) // ex. unsigned long width;
     {
         return attributeAfter.find_last_of(whitespace);
-    }
-
-    std::string toC_StyleType(std::string& type)
-    {
-        if(type == "byte")
-            return "signed char";
-        if(type == "ocetet")
-            return "unsigned char";
-        if(type == "short")
-            return "short";
-        if(type == "unsigned short")
-            return "unsigned short";
-        if(type == "long")
-            return "long";
-        if(type == "unsigned long")
-            return "unsigned long";
-        if(type == "float")
-            return "float";
-        if(type == "unrestricted float")
-            return "float";
-        if(type == "double")
-            return "double";
-        if(type == "unrestricted double")
-            return "double";
-        if(type == "DOMString")
-            return "DOMString";
-        if(type == "USVString")
-            return "USVString";
-        if(type == "ByteString")
-            return "ByteString";
-
-        return type + referenceSuffix;
     }
 
     void Interface::addAttribute(bool isReadOnly, ExtAttrMap& extattrs, std::string& type,

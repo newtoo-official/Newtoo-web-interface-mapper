@@ -4,7 +4,8 @@ namespace NewtooWebInterfaceMapper_core
 
     const char splitterSign = '=';
 
-    ExtAttr::ExtAttr(std::string expression)
+    ExtAttr::ExtAttr(std::string expression, const ExtAttrType aType)
+        : mType(aType)
     {
         std::size_t indexOfSplitterSign = expression.find(splitterSign);
 
@@ -16,6 +17,11 @@ namespace NewtooWebInterfaceMapper_core
         {
             mName = expression;
         }
+    }
+
+    ExtAttrType ExtAttr::type()
+    {
+        return mType;
     }
 
     std::string& ExtAttr::name()
