@@ -12,7 +12,7 @@ namespace NewtooWebInterfaceMapper_core
         if(indexOfSplitterSign != std::string::npos)
         {
             mName = expression.substr(0, indexOfSplitterSign);
-            mValue = expression.substr(indexOfSplitterSign, expression.size() - indexOfSplitterSign);
+            mValue = expression.substr(indexOfSplitterSign + 1, expression.size() - indexOfSplitterSign - 1);
         } else
         {
             mName = expression;

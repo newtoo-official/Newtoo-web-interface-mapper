@@ -35,7 +35,7 @@ namespace NewtooWebInterfaceMapper_core
         std::string extAttrString;
         if(extAttrEnd != std::string::npos)
         {
-            extAttrString = decl.substr(1, extAttrEnd);
+            extAttrString = decl.substr(1, extAttrEnd - 1);
             decl.erase(0, extAttrEnd + 1);
         }
 
@@ -59,10 +59,13 @@ namespace NewtooWebInterfaceMapper_core
 
         mHeaderStart = "class " + mInterfaceName;
 
+        // Добавить окончание
+        mHeaderEnd = "\n};\n\n";
+
         // Создать карту дополнительных параметров
         ExtAttrMap extAttrMap(extAttrString);
 
-        // Добавить конструктор
+        // Добавить конструкторы
         if(extAttrMap.constructor() != 0)
         {
             for(unsigned i = 0; i < extAttrMap.list().size(); i++)
@@ -73,6 +76,31 @@ namespace NewtooWebInterfaceMapper_core
                 std::string args = constructorArguments(extAttrMap.list()[i].name(), aIdl);
                 mSource += mInterfaceName + "::" + mInterfaceName + "("+args+")\n{\n\n}\n\n";
                 mHeaderPublic += tab + mInterfaceName + "(" + args + ");\n";
+            }
+        }
+        if(extAttrMap.namedContructor() != 0)
+        {
+            for(unsigned i = 0; i < extAttrMap.list().size(); i++)
+            {
+                if(extAttrMap.list()[i].type() != NAMED_CONSTRUCTOR_TYPE)
+                    continue;
+
+                std::string value = extAttrMap.list()[i].value();
+
+                std::size_t argsIndex = value.find('(');
+                if(argsIndex == std::string::npos)
+                    continue;
+                argsIndex++;
+
+                std::string args = value.substr(argsIndex, value.size() - argsIndex - 2);
+                args = Function::convertArguments(args, aIdl);
+\
+                mSource += mInterfaceName + "::" + mInterfaceName + "("+args+")\n{\n\n}\n\n";
+                mHeaderPublic += tab + mInterfaceName + "(" + args + ");\n";
+
+                std::string constructorName = value.substr(0, argsIndex - 1);
+
+                mHeaderEnd += "typedef " + mInterfaceName + " "+ constructorName +";\n\n";
             }
         }
 
@@ -103,10 +131,6 @@ namespace NewtooWebInterfaceMapper_core
 
         // Добавить приватные поля
         mHeaderPrivate = "\nprivate:\n";
-
-        // Добавить окончание
-        mHeaderEnd = "\n};\n\n";
-
     }
 
     std::string& Interface::interfaceName()
