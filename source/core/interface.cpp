@@ -12,6 +12,7 @@ namespace NewtooWebInterfaceMapper_core
 {
 
     const char tab[] = "    ";
+    const char doubleSpace[] = "  ";
 
     std::string constructorArguments(const std::string original, IDL* idl)
     {
@@ -31,11 +32,12 @@ namespace NewtooWebInterfaceMapper_core
         :Definition(INTERFACE, aIdl), mIsPartial(false)
     {
         // Назначить дополнительные параметры
-        std::size_t extAttrEnd = decl.find(']');
+        std::string after = decl.substr(0, decl.find('{'));
+        std::size_t extAttrEnd = after.find(']');
         std::string extAttrString;
         if(extAttrEnd != std::string::npos)
         {
-            extAttrString = decl.substr(1, extAttrEnd - 1);
+            extAttrString = after.substr(1, extAttrEnd - 1);
             decl.erase(0, extAttrEnd + 1);
         }
 
@@ -109,7 +111,7 @@ namespace NewtooWebInterfaceMapper_core
         mHeaderPublicPrefix += headerPublicPrefixCopyConstructorDict;
 
         // Добавить конструктор по-умолчанию
-        mHeaderPublic += tab + mInterfaceName + "();\n";
+        mHeaderPublic += tab + mInterfaceName + "();\n\n";
         mSource += mInterfaceName + "::" + mInterfaceName + "()\n{\n\n}\n\n";
 
         // Назначить наследование
@@ -130,7 +132,20 @@ namespace NewtooWebInterfaceMapper_core
         mCopyConstructorEnd = "\n{}\n\n";
 
         // Добавить приватные поля
-        mHeaderPrivate = "\nprivate:\n";
+        mHeaderPrivate = "\n\nprivate:\n";
+
+        std::size_t closeBracketIndex = decl.find('}');
+        if(closeBracketIndex == std::string::npos)
+            return;
+
+        //Добавить содержимое
+
+        std::string inner = decl.substr(openBracketIndex + 1, closeBracketIndex - openBracketIndex - 1);
+
+        while(inner.find(doubleSpace) != std::string::npos)
+            inner = inner.replace(inner.find(doubleSpace), 2, "");
+
+        InterfaceInner::parseInner(inner, this);
     }
 
     std::string& Interface::interfaceName()
@@ -259,14 +274,137 @@ namespace NewtooWebInterfaceMapper_core
         source() += partialSource;
     }
 
-    const char classMemberPrefix = 'm';
+    std::string setAttrStr(std::string get)
+    {
+        get[0] = toupper(get[0]);
+        get = "set" + get;
+        return get;
+    }
+
+    std::string argAttrStr(std::string get)
+    {
+        get[0] = toupper(get[0]);
+        get = "a" + get;
+        return get;
+    }
+
+    const char classMemberPrefix[] = "m";
 
     std::string toClassMemberStyle(const std::string name)
     {
-        std::string str = std::to_string(classMemberPrefix);
+        std::string str = classMemberPrefix;
         str += name;
         str[1] = toupper(str[1]);
         return str;
+    }
+
+    void Interface::appendMemberToCopyConstructor(std::string member)
+    {
+        if(mCopyConstructorInitFields.empty())
+        {
+            mCopyConstructorInitFields += " : " + member + "(ref)";
+        } else
+        {
+            mCopyConstructorInitFields += ", " + member + "(ref)";
+        }
+    }
+
+    void Interface::appendUnit(InterfaceUnit unit)
+    {
+        switch(unit.unitType())
+        {
+            case ATTRIBUTE_TYPE:
+            {
+                std::size_t referenceIndex = unit.type().find('&');
+                if(unit.extattrs().newObject() != 0 and referenceIndex != std::string::npos)
+                    unit.type() = unit.type().replace(referenceIndex, 1, "");
+
+                if(unit.extattrs().sameObject() == 0)
+                {
+                    mHeaderPublic += tab + unit.type() + ' ' + unit.identifer() + "();\n";
+                    mSource += unit.type() + ' ' + interfaceName() + "::" + unit.identifer()
+                            + "()\n{\n\n}\n\n";
+
+                    if(!unit.isReadonlyOrStatic())
+                    {
+                        mHeaderPublic += tab;
+                        mHeaderPublic += "void " + setAttrStr(unit.identifer()) + "("
+                                + unit.type() + ' ' + argAttrStr(unit.identifer()) + ");\n";
+                        mSource += "void " + interfaceName() + "::" + setAttrStr(unit.identifer())
+                                + "(" + unit.type() + ' ' + argAttrStr(unit.identifer())
+                                + ")\n{\n\n}\n\n";
+                    }
+                } else
+                {
+                    std::string member = toClassMemberStyle(unit.identifer());
+                    std::string objType = unit.type();
+                    std::size_t typeRefIndex = objType.find('&');
+                    if(typeRefIndex != std::string::npos)
+                        objType = objType.replace(typeRefIndex, 1, "");
+
+                    mHeaderPublic += tab + unit.type() + ' ' + unit.identifer() + "() const;\n";
+                    mSource += unit.type() + ' ' + interfaceName() + "::" + unit.identifer()
+                            + "() const\n{\n    return " + member + ";\n}\n\n";
+                    mHeaderPrivate += tab + objType + ' ' + member + ";\n";
+
+                    appendMemberToCopyConstructor(member);
+
+                    if(!unit.isReadonlyOrStatic())
+                    {
+                        mHeaderPublic += tab;
+                        mHeaderPublic += "void " + setAttrStr(unit.identifer()) + "("
+                                + unit.type() + ' ' + argAttrStr(unit.identifer()) + ");\n";
+                        mSource += "void " + interfaceName() + "::" + setAttrStr(unit.identifer())
+                                + "(" + unit.type() + ' ' + argAttrStr(unit.identifer())
+                                + ")\n{\n" + member + " = " + argAttrStr(unit.identifer()) + ";\n}\n\n";
+                    }
+                }
+                mHeaderPublic += '\n';
+                break;
+            }
+            case FUNCTION_TYPE:
+            {
+                mHeaderPublic += tab;
+
+                std::string prefix;
+                if(unit.isReadonlyOrStatic())
+                    prefix = "static ";
+
+                mHeaderPublic += prefix + unit.type() + ' ' + unit.identifer() + '(' + unit.args()
+                        + ");\n\n";
+
+                mSource += unit.type() + ' ' + interfaceName() + "::" + unit.identifer() + '('
+                        + unit.args() + ")\n{\n\n}\n\n";
+                break;
+            }
+            case CONSTANT_TYPE:
+            {
+                mHeaderPublic += tab;
+                mHeaderPublic += "const " + unit.type() + ' ' + unit.identifer() + " = " + unit.args()
+                        + ";\n\n";
+                break;
+            }
+            case BAD_UNIT_TYPE:
+            {
+                break;
+            }
+        }
+    }
+
+    std::string Interface::includeDirective()
+    {
+        return "#include \"" + mInterfaceName + ".h\"\n";
+    }
+
+    void Interface::modifySource(std::string& source)
+    {
+        if(source[0] != '#')
+        {
+            source = includeDirective() + '\n' + source;
+        } else
+        {
+            source = includeDirective() + source;
+        }
     }
 
     const char namespaceSuffix[] = "::";
@@ -279,36 +417,6 @@ namespace NewtooWebInterfaceMapper_core
     std::size_t typeEndIndex(std::string& attributeAfter) // ex. unsigned long width;
     {
         return attributeAfter.find_last_of(whitespace);
-    }
-
-    void Interface::addAttribute(bool isReadOnly, ExtAttrMap& extattrs, std::string& type,
-                                 std::string& identifer)
-    {
-        if(isReadOnly)
-        {
-            if(extattrs.sameObject() != 0)
-            {
-
-            } else
-            {
-                mHeaderPublic += type + whitespace;
-                mHeaderPublic += identifer + "();";
-
-                mSource += type + whitespace;
-                mSource += interfaceName() + namespaceSuffix;
-                mSource += identifer + "()\n{\n\n}\n";
-            }
-        }
-        else
-        {
-            if(extattrs.sameObject() != 0)
-            {
-
-            } else
-            {
-
-            }
-        }
     }
 
     bool Interface::isPartial() const

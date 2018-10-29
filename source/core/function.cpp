@@ -10,36 +10,46 @@ namespace NewtooWebInterfaceMapper_core
 
     const char referenceSuffix = '&';
 
-    std::string Function::toC_StyleType(std::string& type)
+    std::string Function::toC_StyleType(std::string type)
     {
         if(type == "byte")
             return "signed char";
-        if(type == "ocetet")
+        else if(type == "ocetet")
             return "unsigned char";
-        if(type == "short")
+        else if(type == "short")
             return "short";
-        if(type == "unsigned short")
+        else if(type == "unsigned short")
             return "unsigned short";
-        if(type == "long")
+        else if(type == "long")
             return "long";
-        if(type == "unsigned long")
+        else if(type == "unsigned long")
             return "unsigned long";
-        if(type == "float")
+        else if(type == "float")
             return "float";
-        if(type == "unrestricted float")
+        else if(type == "unrestricted float")
             return "float";
-        if(type == "double")
+        else if(type == "double")
             return "double";
-        if(type == "unrestricted double")
+        else if(type == "unrestricted double")
             return "double";
-        if(type == "DOMString")
+        else if(type == "DOMString")
             return "DOMString";
-        if(type == "USVString")
+        else if(type == "USVString")
             return "USVString";
-        if(type == "ByteString")
+        else if(type == "ByteString")
             return "ByteString";
+        else if(type == "boolean")
+            return "bool";
+        else if(type == "void")
+            return "void";
+        else if(type.find("sequence<") == 0)
+        {
+            std::size_t start = type.find('<');
+            type = "sequence<" + toC_StyleType(type.substr(start + 1, type.size() - start - 2)) + '>';
+            return type;
+        }
 
-        if(type[type.size() - 1] == pointerSign)
+        else if(type[type.size() - 1] == pointerSign)
         {
             type[type.size() - 1] = pointerSignCpp;
             return type;

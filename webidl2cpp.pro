@@ -29,7 +29,8 @@ HEADERS += \
     source/core/interface.h \
     source/core/extattr.h \
     source/core/extattrmap.h \
-    source/core/function.h
+    source/core/function.h \
+    source/core/interfaceinner.h
 
 SOURCES += \
     source/application/window.cpp \
@@ -46,7 +47,8 @@ SOURCES += \
     source/core/interface.cpp \
     source/core/extattr.cpp \
     source/core/extattrmap.cpp \
-    source/core/function.cpp
+    source/core/function.cpp \
+    source/core/interfaceinner.cpp
 
 RESOURCES += \
     resources.qrc

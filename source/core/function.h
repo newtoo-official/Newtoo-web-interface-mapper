@@ -10,7 +10,7 @@ namespace NewtooWebInterfaceMapper_core
     {
     public:
 
-        static std::string toC_StyleType(std::string& type);
+        static std::string toC_StyleType(std::string type);
 
         static std::string convertDictonaryInner(const std::string original, const IDL* idl);
         /*

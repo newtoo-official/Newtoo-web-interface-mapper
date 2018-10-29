@@ -13,18 +13,30 @@ namespace NewtooWebInterfaceMapper_core
     typedef std::vector<std::string> DeclarationStringList;
     typedef std::vector<std::string> Log;
 
+    const char WarningPrefix[] = "Warning: ";
+    const char ErrorPrefix[] = "Error: ";
+
     class IDL
     {
     public:
         IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings);
 
+        NewtooWebInterfaceMapper::Settings& settings();
+
+        std::string invalidSyntaxError(std::string fragment);
+        std::string atLineSuffix(std::string fragment);
+
         std::string& header();
         std::string& source();
         Log& log();
 
+        void alert(std::string message);
+        void error(std::string message);
+
         DefinitionList& definitions();
 
-        void error(std::string text);
+        unsigned long getLine(std::string fragment);
+        const unsigned long FragmentNotFound = 0;
 
     private:
 
@@ -39,6 +51,8 @@ namespace NewtooWebInterfaceMapper_core
         Log mLog;
 
         DefinitionList mDefinitions;
+
+        std::string mOriginalText;
 
         static DeclarationStringList declarationListFrom(std::string str);
     };

@@ -38,6 +38,12 @@ namespace NewtooWebInterfaceMapper_core
         virtual std::string serializeSource();
         virtual void cascade();
 
+        virtual void modifySource(std::string& source);
+        /*
+            Редактирование исходного кода по усмотрению класса.
+            Например, интерфейс добавляет в исходники директиву #include
+        */
+
     protected:
 
         DefinitionType mType;

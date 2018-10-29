@@ -2,6 +2,7 @@
 ## Features
 - Fully automated
 - All basic types, including const
+- Syntax analyzer with linear precision & log
 - Supported exception throwings
 - Supported regular & readonly attributes
 - Supported extended attributes

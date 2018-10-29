@@ -56,7 +56,10 @@ namespace NewtooWebInterfaceMapper_core
             idl()->header() += mList[i]->serializeHeader();
 
         for(unsigned i = 0; i < mList.size(); i++)
+        {
             idl()->source() += mList[i]->serializeSource();
+            mList[i]->modifySource(idl()->source());
+        }
     }
 
     void DefinitionList::cascade()

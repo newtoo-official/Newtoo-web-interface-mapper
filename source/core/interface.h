@@ -2,6 +2,7 @@
 
 #include "definition.h"
 #include "extattrmap.h"
+#include "interfaceinner.h"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -50,8 +51,7 @@ namespace NewtooWebInterfaceMapper_core
             Находин он нужное определение через DefinitionList::findDefinition(...);
         */
 
-        void addAttribute(bool isReadOnly, ExtAttrMap& extattrs, std::string& type,
-                          std::string& identifer);
+        void appendUnit(InterfaceUnit unit);
         /*
             Сделать этот класс хостом атрибута. Это означает, что для атрибута будет создано
             приватное поле, которое он будет возращать.
@@ -59,7 +59,13 @@ namespace NewtooWebInterfaceMapper_core
 
         bool isPartial() const;
 
+        std::string includeDirective(); // ex. #include "Object.h"
+
+        void modifySource(std::string& source) override;
+
     protected:
+        void appendMemberToCopyConstructor(std::string member);
+
         /*
             For example:
 

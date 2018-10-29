@@ -57,4 +57,9 @@ namespace NewtooWebInterfaceMapper_core
     {
 
     }
+
+    void Definition::modifySource(std::string& source)
+    {
+
+    }
 }

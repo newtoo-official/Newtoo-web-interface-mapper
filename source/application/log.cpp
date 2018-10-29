@@ -51,7 +51,6 @@ namespace NewtooWebInterfaceMapper_application
         ptext += datetimeEnd();
         ptext += splitter();
         ptext += text.toStdString();
-        ptext += newlineSign();
 
         mReference->appendPlainText(QString::fromStdString(ptext));
     }

@@ -4,7 +4,7 @@ namespace NewtooWebInterfaceMapper_core
 {
 
     IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
-        : mSettings(settings), mErrorCounter(0), mDefinitions(this)
+        : mSettings(settings), mErrorCounter(0), mDefinitions(this), mOriginalText(text)
     {
         DeclarationStringList list = declarationListFrom(text);
 
@@ -12,6 +12,11 @@ namespace NewtooWebInterfaceMapper_core
             definitions().newDefinition(list[i]);
 
         serialize();
+    }
+
+    NewtooWebInterfaceMapper::Settings& IDL::settings()
+    {
+        return mSettings;
     }
 
     const char quote_char = '\"';
@@ -129,11 +134,37 @@ namespace NewtooWebInterfaceMapper_core
         return list;
     }
 
+    std::string IDL::invalidSyntaxError(std::string fragment)
+    {
+        return "Invalid syntax" + atLineSuffix(fragment);
+    }
+
+    std::string IDL::atLineSuffix(std::string fragment)
+    {
+        return " at line " + std::to_string(getLine(fragment));
+    }
+
+    unsigned long IDL::getLine(std::string fragment)
+    {
+        std::size_t end = mOriginalText.find(fragment);
+        if(end == std::string::npos)
+            return FragmentNotFound;
+
+        unsigned long amount = 1;
+
+        for(unsigned i = 1; i < end; i++)
+        {
+            if(mOriginalText[i] == newline)
+                amount++;
+        }
+        return amount;
+    }
+
     void IDL::serialize()
     {
         definitions().cascade();
         definitions().serialize();
-        log().push_back("Finished with " + std::to_string(mErrorCounter) + " errors.");
+        alert("Finished with " + std::to_string(mErrorCounter) + " errors.");
     }
 
     std::string& IDL::header()
@@ -149,9 +180,14 @@ namespace NewtooWebInterfaceMapper_core
         return mLog;
     }
 
-    void IDL::error(std::string text)
+    void IDL::alert(std::string message)
     {
-        log().push_back(text);
+        mLog.push_back(message);
+    }
+
+    void IDL::error(std::string message)
+    {
+        alert(ErrorPrefix + message);
         mErrorCounter++;
     }
 

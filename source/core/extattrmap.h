@@ -25,6 +25,12 @@ namespace NewtooWebInterfaceMapper_core
         unsigned long mSameObject;
         unsigned long mNewObject;
 
+        bool mHasNamedContructor;
+        bool mHasConstructor;
+        bool mHasCEReactions;
+        bool mHasSameObject;
+        bool mHasNewObject;
+
         std::vector<ExtAttr> mList;
     };
 }
