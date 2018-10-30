@@ -142,13 +142,13 @@ namespace NewtooWebInterfaceMapper_core
 
             // Убрать устарелые префиксы
             if(argdecl.find("in ") != std::string::npos)
-                argdecl.erase(0, 4);
+                argdecl.erase(0, 3);
 
             bool isOptional = false;
             if(argdecl.find("optional ") != std::string::npos)
             {
                 isOptional = true;
-                argdecl.erase(0, 10);
+                argdecl.erase(0, 9);
             }
 
             Argument arg(argdecl, idl, isOptional);
@@ -159,6 +159,7 @@ namespace NewtooWebInterfaceMapper_core
             } else
             {
                 // Значит сюда надо встатить Dictonary
+                str += "DICTONARY";
             }
 
             if(i != lastDeclIndex)

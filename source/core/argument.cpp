@@ -19,7 +19,7 @@ namespace NewtooWebInterfaceMapper_core
         std::size_t nameStart = before.find_last_of(' ');
         if(nameStart == std::string::npos)
         {
-            idl->error("Missing type or identifer"+idl->atLineSuffix(decl));
+            //idl->error("Missing type or identifer"+idl->atLineSuffix(decl));
             mIsVaild = false;
             return;
         }
