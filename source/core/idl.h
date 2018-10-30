@@ -28,10 +28,12 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string& header();
         std::string& source();
+        std::string& aboveSource();
         Log& log();
 
         void alert(std::string message);
         void error(std::string message);
+        void warning(std::string message);
 
         DefinitionList& definitions();
 
@@ -44,10 +46,12 @@ namespace NewtooWebInterfaceMapper_core
 
         NewtooWebInterfaceMapper::Settings& mSettings;
 
+        unsigned short mWarningCounter;
         unsigned short mErrorCounter;
 
         std::string mHeader;
         std::string mSource;
+        std::string mAboveSource;
         Log mLog;
 
         DefinitionList mDefinitions;

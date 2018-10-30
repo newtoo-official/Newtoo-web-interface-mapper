@@ -3,15 +3,75 @@
 namespace NewtooWebInterfaceMapper_core
 {
 
-    IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
-        : mSettings(settings), mErrorCounter(0), mDefinitions(this), mOriginalText(text)
+    const char open_single_comment[] = "//";
+    const char close_single_comment[] = "\n";
+    const char open_comment[] = "/*";
+    const char close_comment[] = "*/";
+
+    void checkForCommentaries(std::string& ref)
     {
+        if(ref.find(open_comment) == std::string::npos
+                and ref.find(open_single_comment) == std::string::npos)
+        return;
+
+        std::string str = ref;
+
+        while(str.find(open_comment) != std::string::npos
+              and str.find(close_comment) != std::string::npos)
+        {
+            std::size_t start = str.find(open_comment);
+            std::size_t end = str.find(close_comment);
+            str.erase(start, end - start + 2);
+        };
+        while(str.find(open_single_comment) != std::string::npos
+              and str.find(close_single_comment) != std::string::npos)
+        {
+            std::size_t start = str.find(open_single_comment);
+            std::size_t end = str.find(close_single_comment, start);
+            str.erase(start, end - start);
+        };
+        ref = str;
+    }
+
+    void replaceAll(std::string& subject, const std::string search, const std::string replace)
+    {
+        std::size_t pos = 0;
+        while((pos = subject.find(search, pos)) != std::string::npos)
+        {
+             subject.replace(pos, search.length(), replace);
+             pos += replace.length();
+        }
+    }
+
+    std::string withNamespace(const std::string& str, std::string ns)
+    {
+        std::string ret = str;
+        replaceAll(ret, "\n", "\n    ");
+        ret = "namespace " + ns + "\n{\n    " + ret + "\n} // namespace " + ns;
+        return ret;
+    }
+
+    IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
+        : mSettings(settings), mWarningCounter(0), mErrorCounter(0), mDefinitions(this),
+          mOriginalText(text)
+    {
+        // Комментарии уже устарели и вышли из употребления, но всё равно следует удалить
+        checkForCommentaries(text);
+
         DeclarationStringList list = declarationListFrom(text);
 
         for(unsigned i = 0; i < list.size(); i++)
             definitions().newDefinition(list[i]);
 
         serialize();
+
+        if(settings.hasNamespace())
+        {
+            mHeader = withNamespace(mHeader, settings.getNamespace());
+            mSource = withNamespace(mSource, settings.getNamespace());
+        }
+
+        mSource = mAboveSource + '\n' + mSource;
     }
 
     NewtooWebInterfaceMapper::Settings& IDL::settings()
@@ -164,7 +224,8 @@ namespace NewtooWebInterfaceMapper_core
     {
         definitions().cascade();
         definitions().serialize();
-        alert("Finished with " + std::to_string(mErrorCounter) + " errors.");
+        alert("Finished with " + std::to_string(mWarningCounter) + " warnings and "
+              + std::to_string(mErrorCounter) + " errors.");
     }
 
     std::string& IDL::header()
@@ -174,6 +235,10 @@ namespace NewtooWebInterfaceMapper_core
     std::string& IDL::source()
     {
         return mSource;
+    }
+    std::string& IDL::aboveSource()
+    {
+        return mAboveSource;
     }
     Log& IDL::log()
     {
@@ -189,6 +254,12 @@ namespace NewtooWebInterfaceMapper_core
     {
         alert(ErrorPrefix + message);
         mErrorCounter++;
+    }
+
+    void IDL::warning(std::string message)
+    {
+        alert(WarningPrefix + message);
+        mWarningCounter++;
     }
 
     DefinitionList& IDL::definitions()

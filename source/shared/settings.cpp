@@ -2,10 +2,13 @@
 
 namespace NewtooWebInterfaceMapper
 {
-    Settings::Settings() : mNamespace(initialNamespace()),
-        mExceptionTemplateClass(initialExceptionTemplateClass()),
-        mStringPointerClass(initialStringPointerClass()),
-        mInterfaceLanguage(initialInterfaceLanguage())
+    Settings::Settings() : mNamespace(initialNamespace),
+        mExceptionTemplateClass(initialExceptionTemplateClass),
+        mStringPointerClass(initialStringPointerClass),
+        mInterfaceLanguage(initialInterfaceLanguage),
+        mSequence(initialSequence),
+        mTimeStamp(initialTimeStamp),
+        mExceptionOrVoid(initialExceptionOrVoid)
     {}
 
     StringItem Settings::getNamespace() const
@@ -24,48 +27,52 @@ namespace NewtooWebInterfaceMapper
     {
         return mInterfaceLanguage;
     }
+    StringItem Settings::getSequence() const
+    {
+        return mSequence;
+    }
+    StringItem Settings::getTimeStamp() const
+    {
+        return mTimeStamp;
+    }
+    StringItem Settings::getExceptionOrVoid() const
+    {
+        return mExceptionOrVoid;
+    }
 
     bool Settings::hasNamespace()
     {
-        if(mNamespace == initialNamespace())
+        if(mNamespace == initialNamespace)
             return false;
 
         else return true;
     }
 
-    std::string Settings::initialNamespace()
-    {
-        return "";
-    }
-    std::string Settings::initialExceptionTemplateClass()
-    {
-        return "RaisesException";
-    }
-    std::string Settings::initialStringPointerClass()
-    {
-        return "DOMStringOrNull";
-    }
-    std::string Settings::initialInterfaceLanguage()
-    {
-        return "English, US";
-    }
-
     void Settings::set(std::string aNamespace,
              std::string aExceptionTemplateClass,
              std::string aStringPointerClass,
-             std::string aInterfaceLanguage)
+             std::string aInterfaceLanguage,
+             std::string aSequence,
+             std::string aTimeStamp,
+             std::string aExceptionOrVoid)
     {
         mNamespace = aNamespace;
         mExceptionTemplateClass = aExceptionTemplateClass;
         mStringPointerClass = aStringPointerClass;
         mInterfaceLanguage = aInterfaceLanguage;
+        mSequence = aSequence;
+        mTimeStamp = aTimeStamp;
+        mExceptionOrVoid = aExceptionOrVoid;
     }
 
     void Settings::resetDefaults()
     {
-        mNamespace = initialNamespace();
-        mExceptionTemplateClass = initialExceptionTemplateClass();
-        mStringPointerClass = initialStringPointerClass();
-        mInterfaceLanguage = initialInterfaceLanguage();
+        mNamespace = initialNamespace;
+        mExceptionTemplateClass = initialExceptionTemplateClass;
+        mStringPointerClass = initialStringPointerClass;
+        mInterfaceLanguage = initialInterfaceLanguage;
+        mSequence = initialSequence;
+        mTimeStamp = initialTimeStamp;
+        mExceptionOrVoid = initialExceptionOrVoid;
     }
 }

@@ -1,4 +1,4 @@
-#include "interfaceinner.h"
+#include "interfaceunit.h"
 #include "interface.h"
 #include "function.h"
 #include "idl.h"
@@ -63,7 +63,7 @@ namespace NewtooWebInterfaceMapper_core
                 return;
             }
 
-            mType = Function::toC_StyleType(decl.substr(0, afterIndex));
+            mType = Function::toC_StyleType(decl.substr(0, afterIndex), idl);
             mIdentifer = decl.substr(afterIndex + 1, openBracetIndex - afterIndex - 1);
             mArgs = Function::convertArguments(decl.substr(openBracetIndex + 1, closeBracetIndex
                                                            - openBracetIndex - 1), idl);
@@ -95,7 +95,7 @@ namespace NewtooWebInterfaceMapper_core
 
                 std::size_t typeEndIndex = beforeEquals.find_last_of(whitespace);
 
-                mType = Function::toC_StyleType(decl.substr(0, typeEndIndex));
+                mType = Function::toC_StyleType(decl.substr(0, typeEndIndex), idl);
                 mIdentifer = decl.substr(typeEndIndex + 1, beforeEquals.size() - typeEndIndex - 1);
                 mArgs = afterEquals;
             }
@@ -115,7 +115,7 @@ namespace NewtooWebInterfaceMapper_core
 
                 afterIndex = decl.find_last_of(' ');
 
-                mType = Function::toC_StyleType(decl.substr(0, afterIndex));
+                mType = Function::toC_StyleType(decl.substr(0, afterIndex), idl);
                 mIdentifer = decl.substr(afterIndex + 1, decl.size() - afterIndex - 1);
             }
         }

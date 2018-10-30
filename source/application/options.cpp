@@ -9,6 +9,8 @@ namespace NewtooWebInterfaceMapper_application
     {
         ui->setupUi(this);
 
+        ui->langField->addItem("English, US");
+
         connect(ui->cancel, SIGNAL(clicked()), this, SLOT(hide()));
         connect(ui->apply, SIGNAL(clicked()), this, SLOT(saveSettings()));
         connect(ui->ok, SIGNAL(clicked()), this, SLOT(saveAndClose()));
@@ -31,13 +33,19 @@ namespace NewtooWebInterfaceMapper_application
         ui->exceptionTemplateClassField->setText(QString::fromUtf8(mSettings.getExceptionTemplateClass().c_str()));
         ui->stringPointerClassField->setText(QString::fromUtf8(mSettings.getStringPointerClass().c_str()));
         ui->langField->setCurrentText(QString::fromUtf8(mSettings.getInterfaceLanguage().c_str()));
+        ui->sequenceClassField->setText(QString::fromUtf8(mSettings.getSequence().c_str()));
+        ui->timeStampClassField->setText(QString::fromUtf8(mSettings.getTimeStamp().c_str()));
+        ui->exceptionOrVoidClassField->setText(QString::fromUtf8(mSettings.getExceptionOrVoid().c_str()));
     }
     void Options::saveSettings()
     {
         mSettings.set(toUtf8(ui->namespaceField->text()),
                       toUtf8(ui->exceptionTemplateClassField->text()),
                       toUtf8(ui->stringPointerClassField->text()),
-                      toUtf8(ui->langField->currentText()));
+                      toUtf8(ui->langField->currentText()),
+                      toUtf8(ui->sequenceClassField->text()),
+                      toUtf8(ui->timeStampClassField->text()),
+                      toUtf8(ui->exceptionOrVoidClassField->text()));
     }
     void Options::resetDefaults()
     {

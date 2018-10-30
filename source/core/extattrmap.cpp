@@ -1,4 +1,5 @@
 #include "extattrmap.h"
+#include "function.h"
 #include "iostream"
 
 namespace NewtooWebInterfaceMapper_core
@@ -9,43 +10,6 @@ namespace NewtooWebInterfaceMapper_core
     const char closeBracket = ']';
     const char openBracket = '[';
     const char splitter = ',';
-
-    void split(std::vector<std::string>& list, std::string* target)
-    {
-        std::size_t splitterIndex;
-        bool inBrackets = false;
-
-        bool found = false;
-        for(unsigned i = 0; i < target->size(); i++)
-        {
-            char c = target->at(i);
-            if(!inBrackets)
-            {
-                if(c == openArgBracket)
-                {
-                    inBrackets = true;
-                }
-                else if(c == splitter)
-                {
-                    splitterIndex = i;
-                    found = true;
-                    break;
-                }
-            } else
-            {
-                if(c == closeArgBracket)
-                    inBrackets = false;
-            }
-        }
-
-        if(!found)
-            return;
-
-        std::string next = target->substr(splitterIndex + 1, target->size() - splitterIndex - 1);
-        *target = target->substr(0, splitterIndex + 1);
-        list.push_back(next);
-        split(list, &list.back());
-    }
 
     const char whitespace = ' ';
 
@@ -63,7 +27,7 @@ namespace NewtooWebInterfaceMapper_core
     {
         std::vector<std::string> list;
         list.push_back(decl);
-        split(list, &list[0]);
+        Function::splitSequentialListString(list, &list[0]);
 
         for(unsigned i = 0; i < list.size(); i++)
         {

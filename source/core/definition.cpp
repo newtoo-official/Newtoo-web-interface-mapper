@@ -58,8 +58,8 @@ namespace NewtooWebInterfaceMapper_core
 
     }
 
-    void Definition::modifySource(std::string& source)
+    std::string Definition::serializeAboveSource()
     {
-
+        return nullstr;
     }
 }

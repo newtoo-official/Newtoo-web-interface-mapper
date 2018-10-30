@@ -2,7 +2,7 @@
 
 #include "definition.h"
 #include "extattrmap.h"
-#include "interfaceinner.h"
+#include "interfaceunit.h"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -23,6 +23,7 @@ namespace NewtooWebInterfaceMapper_core
         std::string& headerPublicPrefix();
         std::string& headerPublicAppendix();
         std::string& headerPrivate();
+        std::string& headerPrivatePrefix();
         std::string& headerPrivateAppendix();
         std::string& headerEnd();
         std::string& source();
@@ -61,7 +62,7 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string includeDirective(); // ex. #include "Object.h"
 
-        void modifySource(std::string& source) override;
+        std::string serializeAboveSource() override;
 
     protected:
         void appendMemberToCopyConstructor(std::string member);
@@ -88,16 +89,16 @@ namespace NewtooWebInterfaceMapper_core
         std::string mHeaderStart;                       // ex. class Object
         std::string mHeaderInherit;                     // ex. : public AbstractObject
         std::string mHeaderPublic;                      // ex. Object* parent() const;
+        std::string mHeaderPublicPrefix;
         std::string mHeaderPublicAppendix;              // ex. void run();
-        std::string mHeaderPrivate;                     // ex. private: Object* mParent;
+        std::string mHeaderPrivate;                     // ex. Object* mParent;
+        std::string mHeaderPrivatePrefix;
         std::string mHeaderPrivateAppendix;
         std::string mHeaderEnd;                         // ex. };
         std::string mSource;                            // ex. Object* Object::parent const
                                                         //     { return mParent;}
                                                         //     void Object::run()
                                                         //     {}
-
-        std::string mHeaderPublicPrefix;
 
         bool mIsPartial;
     };

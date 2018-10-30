@@ -35,8 +35,14 @@
    </property>
    <item>
     <widget class="QPlainTextEdit" name="text">
+     <property name="styleSheet">
+      <string notr="true">font-family: &quot;Courier new&quot;; font-size: 9pt</string>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string/>
      </property>
     </widget>
    </item>

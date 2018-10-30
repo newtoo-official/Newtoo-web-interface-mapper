@@ -56,10 +56,10 @@ namespace NewtooWebInterfaceMapper_core
             idl()->header() += mList[i]->serializeHeader();
 
         for(unsigned i = 0; i < mList.size(); i++)
-        {
             idl()->source() += mList[i]->serializeSource();
-            mList[i]->modifySource(idl()->source());
-        }
+
+        for(unsigned i = 0; i < mList.size(); i++)
+            idl()->aboveSource() += mList[i]->serializeAboveSource();
     }
 
     void DefinitionList::cascade()
@@ -77,7 +77,7 @@ namespace NewtooWebInterfaceMapper_core
 
             Interface* in = (Interface*)mList[i];
 
-            if(in->interfaceName() == name)
+            if(in->interfaceName() == name and !in->isPartial())
                 return in;
         }
         return 0;
