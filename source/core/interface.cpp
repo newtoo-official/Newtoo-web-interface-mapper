@@ -45,6 +45,9 @@ namespace NewtooWebInterfaceMapper_core
         while(decl.find(' ') == 0)
             decl.erase(0, 1);
 
+        if(after.find("callback ") == 0)
+            decl.erase(0, 10);
+
         if(after.find("partial ") == 0)
         {
             mIsPartial = true;
@@ -141,11 +144,11 @@ namespace NewtooWebInterfaceMapper_core
         // Добавить приватные поля
         mHeaderPrivatePrefix = "\n\nprotected:\n";
 
+        // Добавить содержимое
+
         std::size_t closeBracketIndex = decl.find('}');
         if(closeBracketIndex == std::string::npos)
             return;
-
-        //Добавить содержимое
 
         std::string inner = decl.substr(openBracketIndex + 1, closeBracketIndex - openBracketIndex - 1);
 
@@ -326,17 +329,17 @@ namespace NewtooWebInterfaceMapper_core
 
     void Interface::appendUnit(InterfaceUnit unit)
     {
+        std::size_t referenceIndex = unit.type().find('&');
+        if(unit.extattrs().newObject() != 0 and referenceIndex != std::string::npos)
+        {
+            unit.type() = unit.type().replace(referenceIndex, 1, "");
+            unit.type() = unit.type() + '*';
+        }
+
         switch(unit.unitType())
         {
             case ATTRIBUTE_TYPE:
             {
-                std::size_t referenceIndex = unit.type().find('&');
-                if(unit.extattrs().newObject() != 0 and referenceIndex != std::string::npos)
-                {
-                    unit.type() = unit.type().replace(referenceIndex, 1, "");
-                    unit.type() = unit.type() + '*';
-                }
-
                 if(unit.extattrs().sameObject() == 0)
                 {
                     mHeaderPublic += tab + unit.type() + ' ' + unit.identifer() + "();\n";

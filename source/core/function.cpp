@@ -1,5 +1,6 @@
 #include "function.h"
 #include "interface.h"
+#include "dictionary.h"
 #include "argument.h"
 #include "idl.h"
 
@@ -110,6 +111,8 @@ namespace NewtooWebInterfaceMapper_core
             return "bool";
         else if(type == "void")
             return "void";
+        else if(type == "any")
+            return "double";
         else if(type.find("sequence<") == 0)
             return convertSequence(type, idl);
 
@@ -158,8 +161,20 @@ namespace NewtooWebInterfaceMapper_core
                 str += arg.toString();
             } else
             {
-                // Значит сюда надо встатить Dictonary
-                str += "DICTONARY";
+                Dictionary* dict = idl->definitions().findDictionary(argdecl);
+
+                if(dict != 0)
+                {
+                    if(!isOptional)
+                        str += idl->definitions().findDictionary(argdecl)->toString();
+                    else
+                        str += idl->definitions().findDictionary(argdecl)->
+                                convertedTextWithDefaultValues();
+                } else
+                {
+                    idl->warning("No dictionary named \"" + argdecl + "\""
+                                   + idl->atLineSuffix(original));
+                }
             }
 
             if(i != lastDeclIndex)

@@ -1,6 +1,7 @@
 #include "definitionlist.h"
 #include "idl.h"
 #include "interface.h"
+#include "dictionary.h"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -23,8 +24,9 @@ namespace NewtooWebInterfaceMapper_core
                 mList.push_back(new Interface(mIdl, text));
                 break;
             }
-            case DICTONARY:
+            case DICTIONARY:
             {
+                mList.push_back(new Dictionary(mIdl, text));
                 break;
             }
             case ENUMERATION:
@@ -83,8 +85,19 @@ namespace NewtooWebInterfaceMapper_core
         return 0;
     }
 
-    Dictonary* DefinitionList::findDictonary(std::string name)
+    Dictionary* DefinitionList::findDictionary(std::string name)
     {
+        for(unsigned i = 0; i < mList.size(); i++)
+        {
+            if(mList[i]->type() != DICTIONARY)
+                continue;
+
+            Dictionary* dict = (Dictionary*)mList[i];
+
+            if(dict->dictionaryName() == name and !dict->isPartial()
+                    and !dict->convertedText().empty())
+                return dict;
+        }
         return 0;
     }
 

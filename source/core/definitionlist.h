@@ -6,7 +6,7 @@
 namespace NewtooWebInterfaceMapper_core
 {
     class Interface;
-    class Dictonary;
+    class Dictionary;
 
     class DefinitionList
     {
@@ -20,7 +20,7 @@ namespace NewtooWebInterfaceMapper_core
 
         /* Ищет не частичные интерфейсы */
         Interface* findInterface(std::string name);
-        Dictonary* findDictonary(std::string name);
+        Dictionary* findDictionary(std::string name);
 
         IDL* idl() const;
 

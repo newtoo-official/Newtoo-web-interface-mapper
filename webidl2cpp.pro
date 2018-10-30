@@ -31,7 +31,9 @@ HEADERS += \
     source/core/extattrmap.h \
     source/core/function.h \
     source/core/interfaceunit.h \
-    source/core/argument.h
+    source/core/argument.h \
+    source/core/dictionary.h \
+    source/core/dictionaryunit.h
 
 SOURCES += \
     source/application/window.cpp \
@@ -50,7 +52,9 @@ SOURCES += \
     source/core/extattrmap.cpp \
     source/core/function.cpp \
     source/core/interfaceunit.cpp \
-    source/core/argument.cpp
+    source/core/argument.cpp \
+    source/core/dictionary.cpp \
+    source/core/dictionaryunit.cpp
 
 RESOURCES += \
     resources.qrc

@@ -11,7 +11,7 @@ namespace NewtooWebInterfaceMapper_core
     enum DefinitionType
     {
         INTERFACE,
-        DICTONARY,
+        DICTIONARY,
         ENUMERATION,
         TYPEDEFINE,
         IMPLEMENTS,

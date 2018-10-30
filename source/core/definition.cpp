@@ -29,8 +29,8 @@ namespace NewtooWebInterfaceMapper_core
 
             if(pre.find("interface") != std::string::npos)
                 return INTERFACE;
-            else if(pre.find("dictonary") != std::string::npos)
-                return DICTONARY;
+            else if(pre.find("dictionary") != std::string::npos)
+                return DICTIONARY;
             else if(pre.find("enum") != std::string::npos)
                 return ENUMERATION;
         } else
