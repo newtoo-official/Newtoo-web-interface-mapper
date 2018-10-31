@@ -35,8 +35,8 @@ namespace NewtooWebInterfaceMapper_core
         }
         else mExtattrs = new ExtAttrMap("");
 
-        std::size_t openBracetIndex = decl.find('(');
-        std::size_t closeBracetIndex = decl.find(')');
+        std::size_t openBracetIndex = decl.find_last_of('(');
+        std::size_t closeBracetIndex = decl.find_last_of(')');
         std::size_t afterIndex = decl.find_last_of(' ');
 
         if(afterIndex == std::string::npos)
@@ -47,10 +47,39 @@ namespace NewtooWebInterfaceMapper_core
 
         if(openBracetIndex != std::string::npos and closeBracetIndex != std::string::npos)
         {
+            std::string identiferPrefix;
+            bool reindex = false;
+
             if(decl.find("static ") == 0)
             {
                 mIsReadonlyOrStatic = true;
                 decl.erase(0, 7);
+                reindex = true;
+            }
+
+            if(decl.find("getter ") == 0)
+            {
+                identiferPrefix = "get";
+                decl.erase(0, 7);
+                reindex = true;
+            }
+            else if(decl.find("setter ") == 0)
+            {
+                identiferPrefix = "set";
+                decl.erase(0, 7);
+                reindex = true;
+            }
+            else if(decl.find("legacycaller ") == 0)
+            {
+                decl.erase(0, 13);
+                reindex = true;
+            }
+
+            if(reindex)
+            {
+                openBracetIndex = decl.find_last_of('(');
+                closeBracetIndex = decl.find_last_of(')');
+                afterIndex = decl.find_last_of(' ');
             }
 
             mUnitType = FUNCTION_TYPE;
@@ -67,6 +96,16 @@ namespace NewtooWebInterfaceMapper_core
             mIdentifer = decl.substr(afterIndex + 1, openBracetIndex - afterIndex - 1);
             mArgs = Function::convertArguments(decl.substr(openBracetIndex + 1, closeBracetIndex
                                                            - openBracetIndex - 1), idl);
+
+            IDL::removeSpaces(mIdentifer);
+
+            // Установить префикс
+            if(!identiferPrefix.empty())
+            {
+                if(!mIdentifer.empty())
+                    mIdentifer[0] = toupper(mIdentifer[0]);
+                mIdentifer = identiferPrefix + mIdentifer;
+            }
 
             // Устарелый параметр
             if(decl.find("raises(") != std::string::npos)

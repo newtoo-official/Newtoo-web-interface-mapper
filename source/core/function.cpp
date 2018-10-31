@@ -39,6 +39,21 @@ namespace NewtooWebInterfaceMapper_core
         }
     }
 
+    void preprocessType(std::string& type)
+    {
+        std::size_t openBracket = type.find('(');
+        std::size_t closeBracket = type.find(')');
+
+        if(openBracket != std::string::npos and closeBracket != std::string::npos)
+        {
+            type = type.erase(closeBracket, 1);
+            type = type.erase(openBracket, 1);
+
+            while(type.find(" or ") != std::string::npos)
+                type = type.replace(type.find(" or "), 4, "Or");
+        }
+    }
+
     Function::Type::Type(std::string aText, IDL* idl, bool turnToList,  bool aIsStringType)
         :text(aText), isStringType(aIsStringType)
     {
@@ -47,6 +62,8 @@ namespace NewtooWebInterfaceMapper_core
 
     Function::Type Function::typeFromString(std::string type, IDL* idl)
     {
+        preprocessType(type);
+
         bool toList = turnTypeToList(type);
 
         if(type == "byte")
@@ -107,6 +124,8 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string convertType(std::string type, IDL* idl)
     {
+        preprocessType(type);
+
         if(type == "byte")
             return "signed char";
         else if(type == "ocetet")
@@ -152,11 +171,7 @@ namespace NewtooWebInterfaceMapper_core
             type[type.size() - 1] = pointerSignCpp;
             return type;
         }
-#ifdef typedef_convert_type
-        else return type;
-#else
         else return type + referenceSuffix;
-#endif
     }
 
     std::string Function::toC_StyleType(std::string type, IDL* idl)
@@ -164,6 +179,14 @@ namespace NewtooWebInterfaceMapper_core
         bool toList = turnTypeToList(type);
         std::string ret = convertType(type, idl);
         postprocessType(ret, toList, idl);
+        return ret;
+    }
+
+    std::string Function::toC_StylePlainType(std::string type, IDL* idl)
+    {
+        std::string ret = toC_StyleType(type, idl);
+        if(ret[ret.size() - 1] == referenceSuffix)
+            ret.erase(ret.size() - 1, 1);
         return ret;
     }
 

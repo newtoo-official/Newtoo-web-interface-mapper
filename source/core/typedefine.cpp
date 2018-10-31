@@ -17,7 +17,7 @@ namespace NewtooWebInterfaceMapper_core
         if(decl.find("typedef ") == 0)
             decl.erase(0, 8);
 
-        std::size_t splitter = decl.find(' ');
+        std::size_t splitter = decl.find_last_of(' ');
 
         if(splitter == std::string::npos)
         {
@@ -45,8 +45,6 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string TypeDefine::convertType(std::string type)
     {
-#define typedef_convert_type
-        return Function::toC_StyleType(type, mIdl);
-#undef typedef_convert_type
+        return Function::toC_StylePlainType(type, mIdl);
     }
 }

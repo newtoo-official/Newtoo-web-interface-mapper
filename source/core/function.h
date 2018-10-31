@@ -11,6 +11,7 @@ namespace NewtooWebInterfaceMapper_core
     {
     public:
 
+        static std::string toC_StylePlainType(std::string type, IDL* idl);
         static std::string toC_StyleType(std::string type, IDL* idl);
 
 
