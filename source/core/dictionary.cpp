@@ -62,13 +62,13 @@ namespace NewtooWebInterfaceMapper_core
         std::size_t inheritsIndex = decl.find(':');
         std::size_t openBracketIndex = decl.find('{');
         if(inheritsIndex == std::string::npos)
-            mdictionaryName = decl.substr(nameIndex, openBracketIndex - nameIndex);
+            mDictionaryName = decl.substr(nameIndex, openBracketIndex - nameIndex);
         else
         {
-            mdictionaryName = decl.substr(nameIndex, inheritsIndex - nameIndex);
+            mDictionaryName = decl.substr(nameIndex, inheritsIndex - nameIndex);
         }
-        if(mdictionaryName[mdictionaryName.size() - 1] == ' ')
-            mdictionaryName.erase(mdictionaryName.size() - 1);
+        while(mDictionaryName[mDictionaryName.size() - 1] == ' ')
+            mDictionaryName.erase(mDictionaryName.size() - 1);
 
         // Назначить наследование
         if(inheritsIndex != std::string::npos)
@@ -118,15 +118,15 @@ namespace NewtooWebInterfaceMapper_core
         if(!isPartial())
             return;
 
-        Dictionary* reference = idl()->definitions().findDictionary(mdictionaryName);
+        Dictionary* reference = idl()->definitions().findDictionary(mDictionaryName);
         if(reference != 0)
         {
             reference->convertedTextWithDefaultValues() += ", " + mConvertedTextWithDefaultValues;
             reference->convertedText() += ", " + mConvertedText;
         } else
         {
-            idl()->warning("dictionary \"" + mdictionaryName + "\" doesn't exists"
-                           + idl()->atLineSuffix("partial dictionary " + mdictionaryName));
+            idl()->warning("dictionary \"" + mDictionaryName + "\" doesn't exists"
+                           + idl()->atLineSuffix("partial dictionary " + mDictionaryName));
         }
     }
 
@@ -142,7 +142,7 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string& Dictionary::dictionaryName()
     {
-        return mdictionaryName;
+        return mDictionaryName;
     }
 
     std::string& Dictionary::convertedTextWithDefaultValues()

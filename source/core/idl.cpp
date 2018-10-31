@@ -135,11 +135,7 @@ namespace NewtooWebInterfaceMapper_core
                     case close_rule:
                     {
                         level--;
-                        if(level == 0)
-                        {
-                            split_target();
-                        }
-                        else i++;
+                        i++;
                         break;
                     }
                     case close_single_rule:

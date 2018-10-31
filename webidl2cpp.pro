@@ -33,7 +33,10 @@ HEADERS += \
     source/core/interfaceunit.h \
     source/core/argument.h \
     source/core/dictionary.h \
-    source/core/dictionaryunit.h
+    source/core/dictionaryunit.h \
+    source/core/implements.h \
+    source/core/typedefine.h \
+    source/core/enumeration.h
 
 SOURCES += \
     source/application/window.cpp \
@@ -54,7 +57,10 @@ SOURCES += \
     source/core/interfaceunit.cpp \
     source/core/argument.cpp \
     source/core/dictionary.cpp \
-    source/core/dictionaryunit.cpp
+    source/core/dictionaryunit.cpp \
+    source/core/implements.cpp \
+    source/core/typedefine.cpp \
+    source/core/enumeration.cpp
 
 RESOURCES += \
     resources.qrc

@@ -7,6 +7,7 @@ namespace NewtooWebInterfaceMapper_core
 {
     class Interface;
     class Dictionary;
+    class Enumeration;
 
     class DefinitionList
     {
@@ -21,6 +22,7 @@ namespace NewtooWebInterfaceMapper_core
         /* Ищет не частичные интерфейсы */
         Interface* findInterface(std::string name);
         Dictionary* findDictionary(std::string name);
+        Enumeration* findEnumeration(std::string name);
 
         IDL* idl() const;
 

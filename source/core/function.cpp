@@ -66,8 +66,13 @@ namespace NewtooWebInterfaceMapper_core
             return Type("bool");
         else if(type == "void")
             return Type("void");
+        else if(type == "any")
+            return Type("double");
         else if(type.find("sequence<") == 0)
             return Type(convertSequence(type, idl));
+
+        else if(idl->definitions().findEnumeration(type) != 0)
+            return Type(type);
 
         else if(type[type.size() - 1] == pointerSign)
         {
@@ -116,12 +121,19 @@ namespace NewtooWebInterfaceMapper_core
         else if(type.find("sequence<") == 0)
             return convertSequence(type, idl);
 
+        else if(idl->definitions().findEnumeration(type) != 0)
+            return type;
+
         else if(type[type.size() - 1] == pointerSign)
         {
             type[type.size() - 1] = pointerSignCpp;
             return type;
         }
+#ifdef typedef_convert_type
+        else return type;
+#else
         else return type + referenceSuffix;
+#endif
     }
 
     std::string Function::convertArguments(const std::string original, IDL* idl)
@@ -161,20 +173,7 @@ namespace NewtooWebInterfaceMapper_core
                 str += arg.toString();
             } else
             {
-                Dictionary* dict = idl->definitions().findDictionary(argdecl);
-
-                if(dict != 0)
-                {
-                    if(!isOptional)
-                        str += idl->definitions().findDictionary(argdecl)->toString();
-                    else
-                        str += idl->definitions().findDictionary(argdecl)->
-                                convertedTextWithDefaultValues();
-                } else
-                {
-                    idl->warning("No dictionary named \"" + argdecl + "\""
-                                   + idl->atLineSuffix(original));
-                }
+                idl->error(idl->invalidSyntaxError(original));
             }
 
             if(i != lastDeclIndex)

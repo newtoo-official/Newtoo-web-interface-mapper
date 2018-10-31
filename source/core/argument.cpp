@@ -1,5 +1,6 @@
 #include "argument.h"
 #include "function.h"
+#include "dictionary.h"
 #include "idl.h"
 
 namespace NewtooWebInterfaceMapper_core
@@ -22,6 +23,17 @@ namespace NewtooWebInterfaceMapper_core
             //idl->error("Missing type or identifer"+idl->atLineSuffix(decl));
             mIsVaild = false;
             return;
+        }
+
+        std::string typeidl = before.substr(0, nameStart);
+
+        Dictionary* dict = idl->definitions().findDictionary(typeidl);
+        if(dict != 0)
+        {
+            if(!isOptional)
+                mDictText = dict->toString();
+            else
+                mDictText = dict->convertedTextWithDefaultValues();
         }
 
         Function::Type type = Function::typeFromString(before.substr(0, nameStart), idl);
@@ -54,6 +66,9 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string Argument::toString()
     {
+        if(!mDictText.empty())
+            return mDictText;
+
         if(isOptional())
             return mType + ' ' + mIdentifer + " = " + mDefaultValue;
         else

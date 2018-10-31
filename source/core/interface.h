@@ -59,6 +59,7 @@ namespace NewtooWebInterfaceMapper_core
         */
 
         bool isPartial() const;
+        bool isCallback() const;
 
         std::string includeDirective(); // ex. #include "Object.h"
 
@@ -101,5 +102,6 @@ namespace NewtooWebInterfaceMapper_core
                                                         //     {}
 
         bool mIsPartial;
+        bool mIsCallback;
     };
 }

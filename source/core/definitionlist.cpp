@@ -2,6 +2,9 @@
 #include "idl.h"
 #include "interface.h"
 #include "dictionary.h"
+#include "implements.h"
+#include "typedefine.h"
+#include "enumeration.h"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -31,22 +34,27 @@ namespace NewtooWebInterfaceMapper_core
             }
             case ENUMERATION:
             {
+                mList.push_back(new Enumeration(mIdl, text));
                 break;
             }
             case TYPEDEFINE:
             {
+                mList.push_back(new TypeDefine(mIdl, text));
                 break;
             }
             case IMPLEMENTS:
             {
+                mList.push_back(new Implements(mIdl, text, false));
                 break;
             }
-            case INCLUDES:
+            case INCLUDES: // alias
             {
+                mList.push_back(new Implements(mIdl, text, true));
                 break;
             }
             case UNKNOWN_TYPE:
             {
+                mIdl->warning("Unknown declaration" + mIdl->atLineSuffix(text));
                 break;
             }
         }
@@ -97,6 +105,21 @@ namespace NewtooWebInterfaceMapper_core
             if(dict->dictionaryName() == name and !dict->isPartial()
                     and !dict->convertedText().empty())
                 return dict;
+        }
+        return 0;
+    }
+
+    Enumeration* DefinitionList::findEnumeration(std::string name)
+    {
+        for(unsigned i = 0; i < mList.size(); i++)
+        {
+            if(mList[i]->type() != ENUMERATION)
+                continue;
+
+            Enumeration* en = (Enumeration*)mList[i];
+
+            if(en->enumerationName() == name)
+                return en;
         }
         return 0;
     }

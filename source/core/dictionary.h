@@ -22,7 +22,7 @@ namespace NewtooWebInterfaceMapper_core
 
         void inheritFrom(std::string name);
 
-        std::string mdictionaryName;
+        std::string mDictionaryName;
         std::string mConvertedTextWithDefaultValues;
         std::string mConvertedText;
         bool mIsPartial;

@@ -29,7 +29,7 @@ namespace NewtooWebInterfaceMapper_core
     }
 
     Interface::Interface(IDL* aIdl, std::string decl)
-        :Definition(INTERFACE, aIdl), mIsPartial(false)
+        :Definition(INTERFACE, aIdl), mIsPartial(false), mIsCallback(false)
     {
         // Назначить дополнительные параметры
         std::string after = decl.substr(0, decl.find('{'));
@@ -46,7 +46,10 @@ namespace NewtooWebInterfaceMapper_core
             decl.erase(0, 1);
 
         if(after.find("callback ") == 0)
+        {
+            mIsCallback = true;
             decl.erase(0, 10);
+        }
 
         if(after.find("partial ") == 0)
         {
@@ -65,7 +68,7 @@ namespace NewtooWebInterfaceMapper_core
         {
             mInterfaceName = decl.substr(nameIndex, inheritsIndex - nameIndex);
         }
-        if(mInterfaceName[mInterfaceName.size() - 1] == ' ')
+        while(mInterfaceName[mInterfaceName.size() - 1] == ' ')
             mInterfaceName.erase(mInterfaceName.size() - 1);
 
         mHeaderStart = "class " + mInterfaceName;
@@ -116,7 +119,7 @@ namespace NewtooWebInterfaceMapper_core
         }
 
         // Добавить конструктор копирования и конструктор по-умолчанию
-        mHeaderPublicPrefix = "{\npublic:\n";
+        mHeaderPublicPrefix = "\n{\npublic:\n";
         if(!isPartial())
         {
             mHeaderPublic += headerPublicPrefixCopyConstructorDict;
@@ -132,7 +135,7 @@ namespace NewtooWebInterfaceMapper_core
             while(inherits.find(' ') != std::string::npos)
                 inherits = inherits.replace(inherits.find(' '), 1, "");
 
-            mHeaderInherit = " : public " + inherits + '\n';
+            mHeaderInherit = " : public " + inherits;
 
             mCopyConstructorInitFields = " : " + inherits + "(ref)";
         }
@@ -437,5 +440,9 @@ namespace NewtooWebInterfaceMapper_core
     bool Interface::isPartial() const
     {
         return mIsPartial;
+    }
+    bool Interface::isCallback() const
+    {
+        return mIsCallback;
     }
 }
