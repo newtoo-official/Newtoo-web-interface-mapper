@@ -18,7 +18,7 @@ namespace NewtooWebInterfaceMapper_core
         {
             std::string text;
             bool isStringType;
-            Type(std::string aText, bool aIsStringType = false);
+            Type(std::string aText, IDL* idl, bool turnToList = false, bool aIsStringType = false);
         };
         static Type typeFromString(std::string type, IDL* idl);
 

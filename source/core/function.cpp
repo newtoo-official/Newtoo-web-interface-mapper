@@ -20,69 +20,92 @@ namespace NewtooWebInterfaceMapper_core
         return type;
     }
 
-    Function::Type::Type(std::string aText, bool aIsStringType)
+    bool turnTypeToList(std::string& type)
+    {
+        std::size_t sequenceSuffix = type.find("...");
+        bool ret = sequenceSuffix != std::string::npos;
+        if(ret)
+        {
+            type.erase(sequenceSuffix, 3);
+        }
+        return ret;
+    }
+
+    void postprocessType(std::string& type, bool turnToList, IDL* idl)
+    {
+        if(turnToList)
+        {
+            type = idl->settings().getSequence() + '<' + type + '>';
+        }
+    }
+
+    Function::Type::Type(std::string aText, IDL* idl, bool turnToList,  bool aIsStringType)
         :text(aText), isStringType(aIsStringType)
-    {}
+    {
+        postprocessType(text, turnToList, idl);
+    }
 
     Function::Type Function::typeFromString(std::string type, IDL* idl)
     {
+        bool toList = turnTypeToList(type);
+
         if(type == "byte")
-            return Type("signed char");
+            return Type("signed char", idl, toList);
         else if(type == "ocetet")
-            return Type("unsigned char");
+            return Type("unsigned char", idl, toList);
         else if(type == "short")
-            return Type("short");
+            return Type("short", idl, toList);
         else if(type == "unsigned short")
-            return Type("unsigned short");
+            return Type("unsigned short", idl, toList);
         else if(type == "long")
-            return Type("long");
+            return Type("long", idl, toList);
         else if(type == "unsigned long")
-            return Type("unsigned long");
+            return Type("unsigned long", idl, toList);
         else if(type == "float")
-            return Type("float");
+            return Type("float", idl, toList);
         else if(type == "unrestricted float")
-            return Type("float");
+            return Type("float", idl, toList);
         else if(type == "double")
-            return Type("double");
+            return Type("double", idl, toList);
         else if(type == "unrestricted double")
-            return Type("double");
+            return Type("double", idl, toList);
         else if(type == "DOMString")
         {
-            return Type("DOMString", true);
+            return Type("DOMString", idl, toList, true);
         }
         else if(type == "CSSOMString")
         {
-            return Type("CSSOMString", true);
+            return Type("CSSOMString", idl, toList, true);
         }
         else if(type == "USVString")
         {
-            return Type("USVString", true);
+            return Type("USVString", idl, toList, true);
         }
         else if(type == "ByteString")
         {
-            return Type("ByteString", true);
+            return Type("ByteString", idl, toList, true);
         }
         else if(type == "boolean")
-            return Type("bool");
+            return Type("bool", idl, toList);
         else if(type == "void")
-            return Type("void");
+            return Type("void", idl, toList);
         else if(type == "any")
-            return Type("double");
+            return Type("double", idl, toList);
         else if(type.find("sequence<") == 0)
-            return Type(convertSequence(type, idl));
+            return Type(convertSequence(type, idl), idl, toList);
 
         else if(idl->definitions().findEnumeration(type) != 0)
-            return Type(type);
+            return Type(type, idl, toList);
 
         else if(type[type.size() - 1] == pointerSign)
         {
             type[type.size() - 1] = pointerSignCpp;
-            return Type(type);
+            return Type(type, idl, toList);
         }
-        else return Type(type + referenceSuffix);
+        else return Type(type + referenceSuffix, idl, toList);
     }
 
-    std::string Function::toC_StyleType(std::string type, IDL* idl)
+    std::string convertType(std::string type, IDL* idl)
     {
         if(type == "byte")
             return "signed char";
@@ -134,6 +157,14 @@ namespace NewtooWebInterfaceMapper_core
 #else
         else return type + referenceSuffix;
 #endif
+    }
+
+    std::string Function::toC_StyleType(std::string type, IDL* idl)
+    {
+        bool toList = turnTypeToList(type);
+        std::string ret = convertType(type, idl);
+        postprocessType(ret, toList, idl);
+        return ret;
     }
 
     std::string Function::convertArguments(const std::string original, IDL* idl)

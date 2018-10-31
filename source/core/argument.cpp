@@ -9,12 +9,12 @@ namespace NewtooWebInterfaceMapper_core
     Argument::Argument(std::string decl, IDL* idl, bool isOptional)
         : mIsOptional(isOptional), mIsVaild(true)
     {
-        std::size_t equalsSign = decl.find('=');
+        std::size_t equalsSign = decl.find(" = ");
         std::string before = decl;
         if(equalsSign != std::string::npos)
         {
             mIsOptional = true;
-            mDefaultValue = decl.substr(equalsSign + 1, decl.size() - equalsSign - 1);
+            mDefaultValue = decl.substr(equalsSign + 3, decl.size() - equalsSign - 3);
             before = decl.substr(0, equalsSign);
         }
 
@@ -27,6 +27,7 @@ namespace NewtooWebInterfaceMapper_core
         }
 
         std::string typeidl = before.substr(0, nameStart);
+        IDL::removeSpaces(typeidl);
 
         Dictionary* dict = idl->definitions().findDictionary(typeidl);
         if(dict != 0)
