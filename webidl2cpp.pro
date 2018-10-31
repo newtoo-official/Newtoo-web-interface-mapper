@@ -69,4 +69,10 @@ DISTFILES += \
     resources/icon.png \
     resources/app_icon.ico \
     source/core/todo.md \
-    README.md
+    README.md \
+    global_resources.rc
+
+win32 {
+        RC_FILE += global_resources.rc
+        OTHER_FILES += global_resources.rc
+}

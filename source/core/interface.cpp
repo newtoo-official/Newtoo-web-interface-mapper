@@ -380,7 +380,8 @@ namespace NewtooWebInterfaceMapper_core
                                 + unit.type() + ' ' + argAttrStr(unit.identifer()) + ");\n";
                         mSource += "void " + interfaceName() + "::" + setAttrStr(unit.identifer())
                                 + "(" + unit.type() + ' ' + argAttrStr(unit.identifer())
-                                + ")\n{\n" + member + " = " + argAttrStr(unit.identifer()) + ";\n}\n\n";
+                                + ")\n{\n    " + member + " = " + argAttrStr(unit.identifer())
+                                + ";\n}\n\n";
                     }
                 }
                 mHeaderPublic += '\n';
