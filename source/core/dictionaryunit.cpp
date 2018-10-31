@@ -3,14 +3,6 @@
 
 namespace NewtooWebInterfaceMapper_core
 {
-    void removeSpaces(std::string& str)
-    {
-        while(str[0] == ' ')
-            str.erase(0, 1);
-        while(str[str.size() - 1] == ' ')
-            str.erase(str.size() - 1, 1);
-    }
-
     DictionaryUnit::DictionaryUnit(std::string decl, IDL* idl)
         : mUnitType(UNIT_NORMAL), mIsStringType(false)
     {
@@ -55,7 +47,7 @@ namespace NewtooWebInterfaceMapper_core
         }
 
         std::string typeidl = before.substr(0, identiferStart);
-        removeSpaces(typeidl);
+        IDL::removeSpaces(typeidl);
 
         Function::Type type = Function::typeFromString(typeidl, idl);
         mType = type.text;
@@ -63,7 +55,7 @@ namespace NewtooWebInterfaceMapper_core
         mIsStringType = type.isStringType;
 
         mIdentifer = before.substr(identiferStart + 1, before.size() - identiferStart - 1);
-        removeSpaces(mIdentifer);
+        IDL::removeSpaces(mIdentifer);
 
         if(equalsSignIndex != std::string::npos)
         {

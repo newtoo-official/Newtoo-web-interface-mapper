@@ -22,18 +22,6 @@ namespace NewtooWebInterfaceMapper_core
         };
         static Type typeFromString(std::string type, IDL* idl);
 
-
-        static std::string convertdictionaryInner(const std::string original, IDL* idl);
-        /*
-            dictionary BurgerOrder
-            {
-
-              unsigned long pattyCount;         <= dictionary inner
-              unsigned long cheeseSliceCount;
-
-            };
-        */
-
         static std::string convertArguments(const std::string original, IDL* idl);
         /*
             void merge(optional Node* child);

@@ -262,4 +262,12 @@ namespace NewtooWebInterfaceMapper_core
     {
         return mDefinitions;
     }
+
+    void IDL::removeSpaces(std::string& str)
+    {
+        while(str[0] == ' ')
+            str.erase(0, 1);
+        while(str[str.size() - 1] == ' ')
+            str.erase(str.size() - 1, 1);
+    }
 }

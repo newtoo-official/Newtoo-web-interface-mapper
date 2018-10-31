@@ -36,7 +36,8 @@ HEADERS += \
     source/core/dictionaryunit.h \
     source/core/implements.h \
     source/core/typedefine.h \
-    source/core/enumeration.h
+    source/core/enumeration.h \
+    source/core/callback.h
 
 SOURCES += \
     source/application/window.cpp \
@@ -60,7 +61,8 @@ SOURCES += \
     source/core/dictionaryunit.cpp \
     source/core/implements.cpp \
     source/core/typedefine.cpp \
-    source/core/enumeration.cpp
+    source/core/enumeration.cpp \
+    source/core/callback.cpp
 
 RESOURCES += \
     resources.qrc

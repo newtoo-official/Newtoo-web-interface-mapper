@@ -360,15 +360,22 @@ namespace NewtooWebInterfaceMapper_core
                     }
                 } else
                 {
+                    std::string getFunctionSuffix = " const";
                     std::string member = toClassMemberStyle(unit.identifer());
                     std::string objType = unit.type();
                     std::size_t typeRefIndex = objType.find('&');
                     if(typeRefIndex != std::string::npos)
-                        objType = objType.replace(typeRefIndex, 1, "");
+                    {
+                        objType = objType.erase(typeRefIndex, 1);
+                    }
 
-                    mHeaderPublic += tab + unit.type() + ' ' + unit.identifer() + "() const;\n";
+                    if(unit.type()[unit.type().size() - 1] == '&')
+                        getFunctionSuffix.clear(); // для ссылок C++ не разрешены const-ы
+
+                    mHeaderPublic += tab + unit.type() + ' ' + unit.identifer() + "()"
+                            + getFunctionSuffix + ";\n";
                     mSource += unit.type() + ' ' + interfaceName() + "::" + unit.identifer()
-                            + "() const\n{\n    return " + member + ";\n}\n\n";
+                            + "()" + getFunctionSuffix + "\n{\n    return " + member + ";\n}\n\n";
                     mHeaderPrivate += tab + objType + ' ' + member + ";\n";
 
                     appendMemberToCopyConstructor(member);

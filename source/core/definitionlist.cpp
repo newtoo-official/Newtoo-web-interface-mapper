@@ -5,6 +5,7 @@
 #include "implements.h"
 #include "typedefine.h"
 #include "enumeration.h"
+#include "callback.h"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -50,6 +51,11 @@ namespace NewtooWebInterfaceMapper_core
             case INCLUDES: // alias
             {
                 mList.push_back(new Implements(mIdl, text, true));
+                break;
+            }
+            case CALLBACK_TYPE:
+            {
+                mList.push_back(new Callback(mIdl, text));
                 break;
             }
             case UNKNOWN_TYPE:
@@ -120,6 +126,21 @@ namespace NewtooWebInterfaceMapper_core
 
             if(en->enumerationName() == name)
                 return en;
+        }
+        return 0;
+    }
+
+    Callback* DefinitionList::findCallback(std::string name)
+    {
+        for(unsigned i = 0; i < mList.size(); i++)
+        {
+            if(mList[i]->type() != CALLBACK_TYPE)
+                continue;
+
+            Callback* cb = (Callback*)mList[i];
+
+            if(cb->callbackName() == name)
+                return cb;
         }
         return 0;
     }

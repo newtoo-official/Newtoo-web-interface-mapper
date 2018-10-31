@@ -16,6 +16,7 @@ namespace NewtooWebInterfaceMapper_core
         TYPEDEFINE,
         IMPLEMENTS,
         INCLUDES,
+        CALLBACK_TYPE,
         UNKNOWN_TYPE
     };
 

@@ -130,11 +130,6 @@ namespace NewtooWebInterfaceMapper_core
         }
     }
 
-    void Dictionary::cascade()
-    {
-
-    }
-
     bool Dictionary::isPartial() const
     {
         return mIsPartial;

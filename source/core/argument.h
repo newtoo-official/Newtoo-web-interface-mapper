@@ -26,7 +26,7 @@ namespace NewtooWebInterfaceMapper_core
         std::string mIdentifer;
         std::string mDefaultValue;
 
-        std::string mDictText;
+        std::string mAlternativeText;
 
         bool mIsOptional;
         bool mIsVaild;

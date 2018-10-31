@@ -9,8 +9,6 @@ namespace NewtooWebInterfaceMapper_core
     public:
         Dictionary(IDL* aIdl, std::string decl);
 
-        void cascade() override;
-
         bool isPartial() const;
 
         std::string& dictionaryName();

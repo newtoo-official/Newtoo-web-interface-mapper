@@ -40,6 +40,8 @@ namespace NewtooWebInterfaceMapper_core
         unsigned long getLine(std::string fragment);
         const unsigned long FragmentNotFound = 0;
 
+        static void removeSpaces(std::string& str);
+
     private:
 
         void serialize();

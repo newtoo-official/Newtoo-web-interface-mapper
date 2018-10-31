@@ -41,6 +41,8 @@ namespace NewtooWebInterfaceMapper_core
                 return IMPLEMENTS;
             else if(decl.find("includes") != std::string::npos)
                 return INCLUDES;
+            else if(decl.find("callback") != std::string::npos)
+                return CALLBACK_TYPE;
         }
         return UNKNOWN_TYPE;
     }

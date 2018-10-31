@@ -1,6 +1,7 @@
 #include "argument.h"
 #include "function.h"
 #include "dictionary.h"
+#include "callback.h"
 #include "idl.h"
 
 namespace NewtooWebInterfaceMapper_core
@@ -31,15 +32,21 @@ namespace NewtooWebInterfaceMapper_core
         if(dict != 0)
         {
             if(!isOptional)
-                mDictText = dict->toString();
+                mAlternativeText = dict->toString();
             else
-                mDictText = dict->convertedTextWithDefaultValues();
+                mAlternativeText = dict->convertedTextWithDefaultValues();
         }
 
         Function::Type type = Function::typeFromString(before.substr(0, nameStart), idl);
         mType = type.text;
 
         mIdentifer = before.substr(nameStart + 1, before.size() - nameStart - 1);
+
+        Callback* callback = idl->definitions().findCallback(typeidl);
+        if(callback != 0)
+        {
+            mAlternativeText = callback->toString(mIdentifer);
+        }
 
         if(equalsSign == std::string::npos and mIsOptional)
         {
@@ -66,8 +73,8 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string Argument::toString()
     {
-        if(!mDictText.empty())
-            return mDictText;
+        if(!mAlternativeText.empty())
+            return mAlternativeText;
 
         if(isOptional())
             return mType + ' ' + mIdentifer + " = " + mDefaultValue;

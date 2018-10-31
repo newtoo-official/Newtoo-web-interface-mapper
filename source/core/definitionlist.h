@@ -8,6 +8,7 @@ namespace NewtooWebInterfaceMapper_core
     class Interface;
     class Dictionary;
     class Enumeration;
+    class Callback;
 
     class DefinitionList
     {
@@ -23,6 +24,7 @@ namespace NewtooWebInterfaceMapper_core
         Interface* findInterface(std::string name);
         Dictionary* findDictionary(std::string name);
         Enumeration* findEnumeration(std::string name);
+        Callback* findCallback(std::string name);
 
         IDL* idl() const;
 
