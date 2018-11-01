@@ -245,7 +245,9 @@ namespace NewtooWebInterfaceMapper_core
     {
         std::string initFields = mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
                 + mCopyConstructorInitFieldsMembers + mCopyConstructorInitFieldsMembersAppendix;
-        initFields = initFields.replace(0, 1, " :");
+
+        if(!initFields.empty())
+            initFields = initFields.replace(0, 1, " :");
 
         return mCopyConstructorStart + initFields + mCopyConstructorEnd + mSource;
     }
