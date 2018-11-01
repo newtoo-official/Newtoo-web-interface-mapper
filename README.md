@@ -11,13 +11,13 @@
 - Automatic inclusion of class headers
 - Supported inheritance & partial interfaces
 - Supported static & raises exception functions
+- Supported getters and setters
 - Supported named constructor
 - Automated private fields
 - Supported dictonaties
 - Supported enumerations
 - Supported pointers
 - Crossplatform GUI
-- MIT License
 ## Example
 WebIDL interface:
 ```webidl
@@ -169,5 +169,3 @@ void Node::remove()
 
 }
 ```
-***
-License: [MIT](https://github.com/FlightBlaze/NewtooWebInterfaceMapper/blob/master/LICENSE)
