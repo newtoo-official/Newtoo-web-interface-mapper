@@ -137,7 +137,7 @@ namespace NewtooWebInterfaceMapper_core
 
             mHeaderInherit = " : public " + inherits;
 
-            mCopyConstructorInitFields = " : " + inherits + "(ref)";
+            mCopyConstructorInitFields = ", " + inherits + "(ref)";
         }
 
         // Добавить реализацию конструктора копирования
@@ -173,6 +173,14 @@ namespace NewtooWebInterfaceMapper_core
     std::string& Interface::copyConstructorInitFields()
     {
         return mCopyConstructorInitFields;
+    }
+    std::string& Interface::copyConstructorInitFieldsMembers()
+    {
+        return mCopyConstructorInitFieldsMembers;
+    }
+    std::string& Interface::copyConstructorInitFieldsMembersAppendix()
+    {
+        return mCopyConstructorInitFieldsMembersAppendix;
     }
     std::string& Interface::copyConstructorInitFieldsAppendix()
     {
@@ -235,17 +243,11 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string Interface::serializeSource_Interface()
     {
-        if(isPartial())
-            return nullstr;
+        std::string initFields = mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
+                + mCopyConstructorInitFieldsMembers + mCopyConstructorInitFieldsMembersAppendix;
+        initFields = initFields.replace(0, 1, " :");
 
-        if(!mCopyConstructorInitFieldsAppendix.empty() and mCopyConstructorInitFields.empty())
-        {
-            mCopyConstructorInitFieldsAppendix.erase(0, 3); // Удалить ", "
-            mCopyConstructorInitFields += " : ";
-        }
-
-        return mCopyConstructorStart + mCopyConstructorInitFields + mCopyConstructorInitFieldsAppendix
-                + mCopyConstructorEnd + mSource;
+        return mCopyConstructorStart + initFields + mCopyConstructorEnd + mSource;
     }
 
     std::string Interface::serializeHeader()
@@ -265,7 +267,8 @@ namespace NewtooWebInterfaceMapper_core
         Interface* reference = idl()->definitions().findInterface(mInterfaceName);
         if(reference != 0)
         {
-            reference->append(headerPublic(), headerPrivate(), copyConstructorInitFields(), source());
+            reference->append(headerPublic(), headerPrivate(), copyConstructorInitFields(),
+                              copyConstructorInitFieldsMembers(), source());
         } else
         {
             idl()->warning("Interface \"" + mInterfaceName + "\" doesn't exists"
@@ -279,19 +282,17 @@ namespace NewtooWebInterfaceMapper_core
     const char initFieldsSplitter = ',';
 
     void Interface::append(std::string partialHeaderPublic, std::string partialHeaderPrivate,
-                           std::string partialCopyConstructorInitFields, std::string partialSource)
+                           std::string partialCopyConstructorInitFields,
+                           std::string partialCopyConstructorInitFieldsMembers,
+                           std::string partialSource)
     {
-        if(!partialCopyConstructorInitFields.empty())
-        {
-            partialCopyConstructorInitFields.erase(0, 3); // Удалить префикс ": "
-            partialCopyConstructorInitFields = ", " + partialCopyConstructorInitFields;
-        }
+        copyConstructorInitFieldsMembersAppendix() += partialCopyConstructorInitFieldsMembers;
+        copyConstructorInitFieldsAppendix() += partialCopyConstructorInitFields;
 
         headerPublicAppendix() += newline;
         headerPublicAppendix() += partialHeaderPublic;
         headerPrivateAppendix() += newline;
         headerPrivateAppendix() += partialHeaderPrivate;
-        copyConstructorInitFieldsAppendix() += partialCopyConstructorInitFields;
         source() += partialSource;
     }
 
@@ -321,13 +322,7 @@ namespace NewtooWebInterfaceMapper_core
 
     void Interface::appendMemberToCopyConstructor(std::string member)
     {
-        if(mCopyConstructorInitFields.empty())
-        {
-            mCopyConstructorInitFields += " : " + member + "(ref)";
-        } else
-        {
-            mCopyConstructorInitFields += ", " + member + "(ref)";
-        }
+        mCopyConstructorInitFieldsMembers += ", " + member + "(ref." + member + ")";
     }
 
     void Interface::appendUnit(InterfaceUnit unit)
@@ -406,7 +401,7 @@ namespace NewtooWebInterfaceMapper_core
                         + ");\n\n";
 
                 mSource += unit.type() + ' ' + interfaceName() + "::" + unit.identifer() + '('
-                        + unit.args() + ")\n{\n\n}\n\n";
+                        + Function::removeDefaultValues(unit.args()) + ")\n{\n\n}\n\n";
                 break;
             }
             case CONSTANT_TYPE:

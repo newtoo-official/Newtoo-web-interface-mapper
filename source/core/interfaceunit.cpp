@@ -119,7 +119,10 @@ namespace NewtooWebInterfaceMapper_core
             // Устарелый параметр
             if(decl.find("raises(") != std::string::npos)
             {
-                mType = idl->settings().getExceptionTemplateClass() + '<' + mType + '>';
+                if(mType != "void")
+                    mType = idl->settings().getExceptionTemplateClass() + '<' + mType + '>';
+                else
+                    mType = idl->settings().getExceptionOrVoid();
             }
         }
         else

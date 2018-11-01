@@ -15,6 +15,8 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string& copyConstructorStart();
         std::string& copyConstructorInitFields();
+        std::string& copyConstructorInitFieldsMembers();
+        std::string& copyConstructorInitFieldsMembersAppendix();
         std::string& copyConstructorInitFieldsAppendix();
         std::string& copyConstructorEnd();
         std::string& headerStart();
@@ -46,7 +48,9 @@ namespace NewtooWebInterfaceMapper_core
         void cascade() override;
 
         void append(std::string partialHeaderPublic, std::string partialHeaderPrivate,
-                    std::string partialCopyConstructorInitFields, std::string partialSource);
+                    std::string partialCopyConstructorInitFields,
+                    std::string partialCopyConstructorInitFieldsMembers,
+                    std::string partialSource);
         /*
             Нужен, чтобы объединять все частичные определения воедино через DefinitionList::cascade()
             Находин он нужное определение через DefinitionList::findDefinition(...);
@@ -84,7 +88,9 @@ namespace NewtooWebInterfaceMapper_core
         std::string mInterfaceName;
 
         std::string mCopyConstructorStart;              // ex. Object::Object(Object& ref)
-        std::string mCopyConstructorInitFields;         // ex. : mParent(0)
+        std::string mCopyConstructorInitFields;         // ex. : AbstractObject(ref)
+        std::string mCopyConstructorInitFieldsMembers;  // ex. , mParent(0)
+        std::string mCopyConstructorInitFieldsMembersAppendix;
         std::string mCopyConstructorInitFieldsAppendix;
         std::string mCopyConstructorEnd;                // ex. {}
         std::string mHeaderStart;                       // ex. class Object

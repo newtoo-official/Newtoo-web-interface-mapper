@@ -72,6 +72,7 @@ namespace NewtooWebInterfaceMapper_core
             interfaceTarget->headerInherit() = " : public " + implements();
         else
             interfaceTarget->headerInherit() += ", public " + implements();
+        interfaceTarget->copyConstructorInitFieldsAppendix() += ", " + implements() + "(ref)";
     }
 
     std::string& Implements::interface()

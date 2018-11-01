@@ -7,7 +7,6 @@ namespace NewtooWebInterfaceMapper
         mStringPointerClass(initialStringPointerClass),
         mInterfaceLanguage(initialInterfaceLanguage),
         mSequence(initialSequence),
-        mTimeStamp(initialTimeStamp),
         mExceptionOrVoid(initialExceptionOrVoid),
         mArray(initialArray)
     {}
@@ -32,10 +31,6 @@ namespace NewtooWebInterfaceMapper
     {
         return mSequence;
     }
-    StringItem Settings::getTimeStamp() const
-    {
-        return mTimeStamp;
-    }
     StringItem Settings::getExceptionOrVoid() const
     {
         return mExceptionOrVoid;
@@ -58,7 +53,6 @@ namespace NewtooWebInterfaceMapper
              std::string aStringPointerClass,
              std::string aInterfaceLanguage,
              std::string aSequence,
-             std::string aTimeStamp,
              std::string aExceptionOrVoid,
              std::string aArray)
     {
@@ -67,7 +61,6 @@ namespace NewtooWebInterfaceMapper
         mStringPointerClass = aStringPointerClass;
         mInterfaceLanguage = aInterfaceLanguage;
         mSequence = aSequence;
-        mTimeStamp = aTimeStamp;
         mExceptionOrVoid = aExceptionOrVoid;
         mArray = aArray;
     }
@@ -79,7 +72,6 @@ namespace NewtooWebInterfaceMapper
         mStringPointerClass = initialStringPointerClass;
         mInterfaceLanguage = initialInterfaceLanguage;
         mSequence = initialSequence;
-        mTimeStamp = initialTimeStamp;
         mExceptionOrVoid = initialExceptionOrVoid;
         mArray = initialArray;
     }

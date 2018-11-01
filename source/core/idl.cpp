@@ -96,6 +96,8 @@ namespace NewtooWebInterfaceMapper_core
         }
 
         mSource = mAboveSource + '\n' + mSource;
+
+        mHeader = "#pragma once\n\n" + mHeader;
     }
 
     NewtooWebInterfaceMapper::Settings& IDL::settings()

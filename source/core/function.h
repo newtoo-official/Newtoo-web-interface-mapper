@@ -30,5 +30,7 @@ namespace NewtooWebInterfaceMapper_core
         */
 
         static void splitSequentialListString(std::vector<std::string>& list, std::string* target);
+
+        static std::string removeDefaultValues(const std::string& args);
     };
 }

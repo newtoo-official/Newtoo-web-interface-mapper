@@ -309,4 +309,24 @@ namespace NewtooWebInterfaceMapper_core
         splitSequentialListString(list, &list.back());
     }
 
+    std::string Function::removeDefaultValues(const std::string& args)
+    {
+        std::string arguments = args;
+
+        while(arguments.find(" =") != std::string::npos)
+        {
+            std::size_t equals = arguments.find(" =");
+            std::size_t splitter = arguments.find(',', equals);
+
+            if(splitter != std::string::npos)
+            {
+                arguments.erase(equals, splitter - equals);
+            } else
+            {
+                arguments.erase(equals, arguments.size() - equals);
+            }
+        }
+        return arguments;
+    }
+
 }
