@@ -57,8 +57,13 @@ namespace NewtooWebInterfaceMapper_core
             decl.erase(0, 9);
         }
 
-        // Назначить название интерфейса
         std::size_t nameIndex = decl.find(' ');
+
+        std::size_t mixinModiferIndex = decl.find("mixin ", nameIndex);
+        if(mixinModiferIndex != std::string::npos)
+            decl.erase(mixinModiferIndex, 6);
+
+        // Назначить название интерфейса
         nameIndex++;
         std::size_t inheritsIndex = decl.find(':');
         std::size_t openBracketIndex = decl.find('{');
