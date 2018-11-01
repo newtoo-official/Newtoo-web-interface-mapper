@@ -51,6 +51,12 @@ namespace NewtooWebInterfaceMapper_core
         return ret;
     }
 
+    bool isDictionary(std::string& decl)
+    {
+        std::size_t openBracket = decl.find('{');
+        return openBracket != std::string::npos and decl.find("dictionary ") < openBracket;
+    }
+
     IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
         : mSettings(settings), mWarningCounter(0), mErrorCounter(0), mDefinitions(this),
           mOriginalText(text)
@@ -60,8 +66,26 @@ namespace NewtooWebInterfaceMapper_core
 
         DeclarationStringList list = declarationListFrom(text);
 
+        // Словари должны быть объявлены первыми
+        DeclarationStringList dictionaries;
+        DeclarationStringList other;
+
         for(unsigned i = 0; i < list.size(); i++)
-            definitions().newDefinition(list[i]);
+        {
+            if(isDictionary(list[i]))
+            {
+                dictionaries.push_back(list[i]);
+            } else
+            {
+                other.push_back(list[i]);
+            }
+        }
+
+        for(unsigned i = 0; i < dictionaries.size(); i++)
+            definitions().newDefinition(dictionaries[i]);
+
+        for(unsigned i = 0; i < other.size(); i++)
+            definitions().newDefinition(other[i]);
 
         serialize();
 
