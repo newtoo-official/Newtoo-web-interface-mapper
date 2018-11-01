@@ -52,6 +52,9 @@ namespace NewtooWebInterfaceMapper_core
         Function::Type type = Function::typeFromString(typeidl, idl);
         mType = type.text;
 
+        if(mType[mType.size() - 1] == '&')
+            mType.erase(mType.size() - 1, 1);
+
         mIsStringType = type.isStringType;
 
         mIdentifer = before.substr(identiferStart + 1, before.size() - identiferStart - 1);

@@ -139,6 +139,10 @@ namespace NewtooWebInterfaceMapper_core
         else if(type[type.size() - 1] == pointerSign)
         {
             type[type.size() - 1] = pointerSignCpp;
+
+            if(type == "DOMString*" or type == "CSSOMString*" or type == "USVString*")
+                return Type(idl->settings().getStringPointerClass(), idl, toArray);
+
             return Type(type, idl, toArray);
         }
         else return Type(type + referenceSuffix, idl, toArray);
@@ -193,6 +197,10 @@ namespace NewtooWebInterfaceMapper_core
         else if(type[type.size() - 1] == pointerSign)
         {
             type[type.size() - 1] = pointerSignCpp;
+
+            if(type == "DOMString*" or type == "CSSOMString*" or type == "USVString*")
+                return idl->settings().getStringPointerClass();
+
             return type;
         }
         else return type + referenceSuffix;

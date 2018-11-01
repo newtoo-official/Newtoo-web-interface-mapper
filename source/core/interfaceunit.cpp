@@ -72,6 +72,12 @@ namespace NewtooWebInterfaceMapper_core
                 decl.erase(0, 7);
                 reindex = true;
             }
+            else if(decl.find("deleter ") == 0)
+            {
+                identiferPrefix = "remove";
+                decl.erase(0, 8);
+                reindex = true;
+            }
             else if(decl.find("legacycaller ") == 0)
             {
                 decl.erase(0, 13);
@@ -95,7 +101,7 @@ namespace NewtooWebInterfaceMapper_core
                 return;
             }
 
-            mType = Function::toC_StyleType(decl.substr(0, afterIndex), idl);
+            mType = Function::toC_StylePlainType(decl.substr(0, afterIndex), idl);
             mIdentifer = decl.substr(afterIndex + 1, openBracetIndex - afterIndex - 1);
             mArgs = Function::convertArguments(decl.substr(openBracetIndex + 1, closeBracetIndex
                                                            - openBracetIndex - 1), idl);

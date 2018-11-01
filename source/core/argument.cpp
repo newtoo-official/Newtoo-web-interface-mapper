@@ -41,6 +41,9 @@ namespace NewtooWebInterfaceMapper_core
         Function::Type type = Function::typeFromString(before.substr(0, nameStart), idl);
         mType = type.text;
 
+        if(mType[mType.size() - 1] == '&')
+            mType.erase(mType.size() - 1, 1);
+
         mIdentifer = before.substr(nameStart + 1, before.size() - nameStart - 1);
 
         Callback* callback = idl->definitions().findCallback(typeidl);
