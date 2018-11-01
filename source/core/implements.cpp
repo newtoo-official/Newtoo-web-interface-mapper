@@ -93,6 +93,6 @@ namespace NewtooWebInterfaceMapper_core
         if(!includes())
             return interface() + " implements " + implements();
         else
-            return interface() + " extends " + implements();
+            return interface() + " includes " + implements();
     }
 }

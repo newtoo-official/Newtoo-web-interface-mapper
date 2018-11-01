@@ -13,6 +13,7 @@ namespace NewtooWebInterfaceMapper
     const char initialSequence[] = "Sequence";
     const char initialTimeStamp[] = "unsigned long long";
     const char initialExceptionOrVoid[] = "ExceptionOrVoid";
+    const char initialArray[] = "Array";
 
     class Settings
     {
@@ -26,6 +27,7 @@ namespace NewtooWebInterfaceMapper
         StringItem getSequence() const;
         StringItem getTimeStamp() const;
         StringItem getExceptionOrVoid() const;
+        StringItem getArray() const;
 
         bool hasNamespace();
 
@@ -35,7 +37,8 @@ namespace NewtooWebInterfaceMapper
                  std::string aInterfaceLanguage,
                  std::string aSequence,
                  std::string aTimeStamp,
-                 std::string aExceptionOrVoid);
+                 std::string aExceptionOrVoid,
+                 std::string aArray);
 
         void resetDefaults();
 
@@ -46,6 +49,7 @@ namespace NewtooWebInterfaceMapper
                    mInterfaceLanguage,
                    mSequence,
                    mTimeStamp,
-                   mExceptionOrVoid;
+                   mExceptionOrVoid,
+                   mArray;
     };
 }

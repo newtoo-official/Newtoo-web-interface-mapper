@@ -3,6 +3,7 @@
 #include "dictionary.h"
 #include "argument.h"
 #include "idl.h"
+#include "iostream"
 
 namespace NewtooWebInterfaceMapper_core
 {
@@ -15,27 +16,43 @@ namespace NewtooWebInterfaceMapper_core
     std::string convertSequence(std::string& type, IDL* idl)
     {
         std::size_t start = type.find('<');
-        type = idl->settings().getSequence() + '<'
-                + Function::toC_StyleType(type.substr(start + 1, type.size() - start - 2), idl) + ">&";
+        type = idl->settings().getSequence() + '<' + Function::toC_StylePlainType(type.substr(start + 1,
+                                                type.size() - start - 2), idl) + ">&";
         return type;
     }
 
-    bool turnTypeToList(std::string& type)
+    const char PromiseTemplateStart[] = "Promise<";
+
+    std::string convertPromise(std::string& type, IDL* idl)
     {
-        std::size_t sequenceSuffix = type.find("...");
-        bool ret = sequenceSuffix != std::string::npos;
+        std::size_t start = type.find('<');
+        type = PromiseTemplateStart + Function::toC_StylePlainType(type.substr(start + 1, type.size()
+                                                                - start - 2), idl) + ">&";
+        return type;
+    }
+
+    bool turnTypeToArray(std::string& type)
+    {
+        std::size_t extensionSuffix = type.find("...");
+        bool ret = extensionSuffix != std::string::npos;
         if(ret)
         {
-            type.erase(sequenceSuffix, 3);
+            type.erase(extensionSuffix, 3);
+        }
+        std::size_t arraySuffix = type.find("[]");
+        if(arraySuffix != std::string::npos)
+        {
+            type.erase(arraySuffix, 2);
+            ret = true;
         }
         return ret;
     }
 
-    void postprocessType(std::string& type, bool turnToList, IDL* idl)
+    void postprocessType(std::string& type, bool turnToArray, IDL* idl)
     {
-        if(turnToList)
+        if(turnToArray)
         {
-            type = idl->settings().getSequence() + '<' + type + '>';
+            type = idl->settings().getArray() + '<' + type + '>';
         }
     }
 
@@ -51,6 +68,9 @@ namespace NewtooWebInterfaceMapper_core
 
             while(type.find(" or ") != std::string::npos)
                 type = type.replace(type.find(" or "), 4, "Or");
+
+            while(type.find(' ') != std::string::npos)
+                type.erase(type.find(' '), 1);
         }
     }
 
@@ -64,62 +84,64 @@ namespace NewtooWebInterfaceMapper_core
     {
         preprocessType(type);
 
-        bool toList = turnTypeToList(type);
+        bool toArray = turnTypeToArray(type);
 
         if(type == "byte")
-            return Type("signed char", idl, toList);
+            return Type("signed char", idl, toArray);
         else if(type == "ocetet")
-            return Type("unsigned char", idl, toList);
+            return Type("unsigned char", idl, toArray);
         else if(type == "short")
-            return Type("short", idl, toList);
+            return Type("short", idl, toArray);
         else if(type == "unsigned short")
-            return Type("unsigned short", idl, toList);
+            return Type("unsigned short", idl, toArray);
         else if(type == "long")
-            return Type("long", idl, toList);
+            return Type("long", idl, toArray);
         else if(type == "unsigned long")
-            return Type("unsigned long", idl, toList);
+            return Type("unsigned long", idl, toArray);
         else if(type == "float")
-            return Type("float", idl, toList);
+            return Type("float", idl, toArray);
         else if(type == "unrestricted float")
-            return Type("float", idl, toList);
+            return Type("float", idl, toArray);
         else if(type == "double")
-            return Type("double", idl, toList);
+            return Type("double", idl, toArray);
         else if(type == "unrestricted double")
-            return Type("double", idl, toList);
+            return Type("double", idl, toArray);
         else if(type == "DOMString")
         {
-            return Type("DOMString", idl, toList, true);
+            return Type("DOMString", idl, toArray, true);
         }
         else if(type == "CSSOMString")
         {
-            return Type("CSSOMString", idl, toList, true);
+            return Type("CSSOMString", idl, toArray, true);
         }
         else if(type == "USVString")
         {
-            return Type("USVString", idl, toList, true);
+            return Type("USVString", idl, toArray, true);
         }
         else if(type == "ByteString")
         {
-            return Type("ByteString", idl, toList, true);
+            return Type("ByteString", idl, toArray, true);
         }
         else if(type == "boolean")
-            return Type("bool", idl, toList);
+            return Type("bool", idl, toArray);
         else if(type == "void")
-            return Type("void", idl, toList);
+            return Type("void", idl, toArray);
         else if(type == "any")
-            return Type("double", idl, toList);
+            return Type("double", idl, toArray);
         else if(type.find("sequence<") == 0)
-            return Type(convertSequence(type, idl), idl, toList);
+            return Type(convertSequence(type, idl), idl, toArray);
+        else if(type.find("Promise<") == 0)
+            return Type(convertPromise(type, idl), idl, toArray);
 
         else if(idl->definitions().findEnumeration(type) != 0)
-            return Type(type, idl, toList);
+            return Type(type, idl, toArray);
 
         else if(type[type.size() - 1] == pointerSign)
         {
             type[type.size() - 1] = pointerSignCpp;
-            return Type(type, idl, toList);
+            return Type(type, idl, toArray);
         }
-        else return Type(type + referenceSuffix, idl, toList);
+        else return Type(type + referenceSuffix, idl, toArray);
     }
 
     std::string convertType(std::string type, IDL* idl)
@@ -162,6 +184,8 @@ namespace NewtooWebInterfaceMapper_core
             return "double";
         else if(type.find("sequence<") == 0)
             return convertSequence(type, idl);
+        else if(type.find("Promise<") == 0)
+            return convertPromise(type, idl);
 
         else if(idl->definitions().findEnumeration(type) != 0)
             return type;
@@ -176,9 +200,9 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string Function::toC_StyleType(std::string type, IDL* idl)
     {
-        bool toList = turnTypeToList(type);
+        bool toArray = turnTypeToArray(type);
         std::string ret = convertType(type, idl);
-        postprocessType(ret, toList, idl);
+        postprocessType(ret, toArray, idl);
         return ret;
     }
 

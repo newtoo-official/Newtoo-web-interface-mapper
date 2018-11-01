@@ -36,6 +36,7 @@ namespace NewtooWebInterfaceMapper_application
         ui->sequenceClassField->setText(QString::fromUtf8(mSettings.getSequence().c_str()));
         ui->timeStampClassField->setText(QString::fromUtf8(mSettings.getTimeStamp().c_str()));
         ui->exceptionOrVoidClassField->setText(QString::fromUtf8(mSettings.getExceptionOrVoid().c_str()));
+        ui->arrayClassField->setText(QString::fromUtf8(mSettings.getArray().c_str()));
     }
     void Options::saveSettings()
     {
@@ -45,7 +46,8 @@ namespace NewtooWebInterfaceMapper_application
                       toUtf8(ui->langField->currentText()),
                       toUtf8(ui->sequenceClassField->text()),
                       toUtf8(ui->timeStampClassField->text()),
-                      toUtf8(ui->exceptionOrVoidClassField->text()));
+                      toUtf8(ui->exceptionOrVoidClassField->text()),
+                      toUtf8(ui->arrayClassField->text()));
     }
     void Options::resetDefaults()
     {

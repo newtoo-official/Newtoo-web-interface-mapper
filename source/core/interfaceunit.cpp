@@ -22,6 +22,8 @@ namespace NewtooWebInterfaceMapper_core
     InterfaceUnit::InterfaceUnit(std::string decl, IDL* idl) : mExtattrs(0), mIsReadonlyOrStatic(false),
         mUnitType(BAD_UNIT_TYPE)
     {
+        IDL::removeSpaces(decl);
+
         std::size_t openExtattrBracket = decl.find("[");
         std::size_t closeExtattrBracket = decl.find("]");
         if(openExtattrBracket != std::string::npos and closeExtattrBracket != std::string::npos)
@@ -35,9 +37,10 @@ namespace NewtooWebInterfaceMapper_core
         }
         else mExtattrs = new ExtAttrMap("");
 
-        std::size_t openBracetIndex = decl.find_last_of('(');
+        std::size_t openBracetIndex = decl.find_first_of('(', 1);
         std::size_t closeBracetIndex = decl.find_last_of(')');
-        std::size_t afterIndex = decl.find_last_of(' ');
+
+        std::size_t afterIndex = decl.substr(0, openBracetIndex).find_last_of(' ');
 
         if(afterIndex == std::string::npos)
         {

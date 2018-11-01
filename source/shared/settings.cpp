@@ -8,7 +8,8 @@ namespace NewtooWebInterfaceMapper
         mInterfaceLanguage(initialInterfaceLanguage),
         mSequence(initialSequence),
         mTimeStamp(initialTimeStamp),
-        mExceptionOrVoid(initialExceptionOrVoid)
+        mExceptionOrVoid(initialExceptionOrVoid),
+        mArray(initialArray)
     {}
 
     StringItem Settings::getNamespace() const
@@ -39,6 +40,10 @@ namespace NewtooWebInterfaceMapper
     {
         return mExceptionOrVoid;
     }
+    StringItem Settings::getArray() const
+    {
+        return mArray;
+    }
 
     bool Settings::hasNamespace()
     {
@@ -54,7 +59,8 @@ namespace NewtooWebInterfaceMapper
              std::string aInterfaceLanguage,
              std::string aSequence,
              std::string aTimeStamp,
-             std::string aExceptionOrVoid)
+             std::string aExceptionOrVoid,
+             std::string aArray)
     {
         mNamespace = aNamespace;
         mExceptionTemplateClass = aExceptionTemplateClass;
@@ -63,6 +69,7 @@ namespace NewtooWebInterfaceMapper
         mSequence = aSequence;
         mTimeStamp = aTimeStamp;
         mExceptionOrVoid = aExceptionOrVoid;
+        mArray = aArray;
     }
 
     void Settings::resetDefaults()
@@ -74,5 +81,6 @@ namespace NewtooWebInterfaceMapper
         mSequence = initialSequence;
         mTimeStamp = initialTimeStamp;
         mExceptionOrVoid = initialExceptionOrVoid;
+        mArray = initialArray;
     }
 }

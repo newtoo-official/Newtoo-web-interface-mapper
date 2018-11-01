@@ -197,7 +197,7 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string IDL::atLineSuffix(std::string fragment)
     {
-        return " at line " + std::to_string(getLine(fragment) + '.');
+        return " at line " + std::to_string(getLine(fragment)) + '.';
     }
 
     unsigned long IDL::getLine(std::string fragment)
