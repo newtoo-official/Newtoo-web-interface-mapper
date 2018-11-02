@@ -18,10 +18,11 @@ namespace NewtooWebInterfaceMapper_core
     {
         std::string str = original;
         std::size_t argsIndex = str.find('(');
+        std::size_t argsEndIndex = str.find(')');
         if(argsIndex != std::string::npos)
         {
             argsIndex++;
-            str = str.substr(argsIndex, str.size() - argsIndex - 1);
+            str = str.substr(argsIndex, argsEndIndex - argsIndex);
             str = Function::convertArguments(str, idl);
             return str;
         }
