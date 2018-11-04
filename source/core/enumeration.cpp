@@ -7,7 +7,7 @@ namespace NewtooWebInterfaceMapper_core
     const char doubleSpace[] = "  ";
 
     Enumeration::Enumeration(IDL* aIdl, std::string decl)
-        :Definition(ENUMERATION, aIdl), mIdl(aIdl)
+        :Definition(ENUMERATION, aIdl), mIsTyped(false), mIdl(aIdl)
     {
         // Назначить дополнительные параметры
         std::string after = decl.substr(0, decl.find('{'));
@@ -22,6 +22,12 @@ namespace NewtooWebInterfaceMapper_core
         // Удалить пробелы, чтобы правильно назначить название
         while(decl.find(' ') == 0)
             decl.erase(0, 1);
+
+        if(decl.find("typed ") == 0)
+        {
+            mIsTyped = true;
+            decl.erase(0, 6);
+        }
 
         // Назначить название
         std::size_t nameIndex = decl.find(' ');
@@ -47,7 +53,10 @@ namespace NewtooWebInterfaceMapper_core
 
     std::string Enumeration::serializeHeader()
     {
-        return "enum " + mEnumerationName + "\n{\n" + mConvertedInner + "\n};\n\n";
+        if(!isTyped())
+            return "enum " + mEnumerationName + "\n{\n" + mConvertedInner + "\n};\n\n";
+        else
+            return "enum class " + mEnumerationName + "\n{\n" + mConvertedInner + "\n};\n\n";
     }
 
     std::string& Enumeration::enumerationName()
@@ -97,5 +106,10 @@ namespace NewtooWebInterfaceMapper_core
             if(i != lastItemIndex)
                 mConvertedInner += ",\n";
         }
+    }
+
+    bool Enumeration::isTyped() const
+    {
+        return mIsTyped;
     }
 }

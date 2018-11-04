@@ -13,10 +13,13 @@ namespace NewtooWebInterfaceMapper_core
 
         std::string& enumerationName();
 
+        bool isTyped() const;
+
     private:
         void convertInner(std::string& inner);
         void markdownItem(std::string& str);
 
+        bool mIsTyped;
         std::string mEnumerationName;
         std::string mConvertedInner;
         IDL* mIdl;

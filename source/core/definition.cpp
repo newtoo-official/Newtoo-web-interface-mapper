@@ -27,21 +27,21 @@ namespace NewtooWebInterfaceMapper_core
         {
             std::string pre = decl.substr(0, decl.find(open_rule));
 
-            if(pre.find("interface") != std::string::npos)
+            if(pre.find("interface ") != std::string::npos)
                 return INTERFACE;
-            else if(pre.find("dictionary") != std::string::npos)
+            else if(pre.find("dictionary ") != std::string::npos)
                 return DICTIONARY;
-            else if(pre.find("enum") != std::string::npos)
+            else if(pre.find("enum ") != std::string::npos)
                 return ENUMERATION;
         } else
         {
-            if(decl.find("typedef") == 0)
+            if(decl.find("typedef ") == 0)
                 return TYPEDEFINE;
-            else if(decl.find("implements") != std::string::npos)
+            else if(decl.find("implements ") != std::string::npos)
                 return IMPLEMENTS;
-            else if(decl.find("includes") != std::string::npos)
+            else if(decl.find("includes ") != std::string::npos)
                 return INCLUDES;
-            else if(decl.find("callback") != std::string::npos)
+            else if(decl.find("callback ") != std::string::npos)
                 return CALLBACK_TYPE;
         }
         return UNKNOWN_TYPE;
