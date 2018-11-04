@@ -26,7 +26,7 @@ namespace NewtooWebInterfaceMapper_core
 
         std::size_t openExtattrBracket = decl.find("[");
         std::size_t closeExtattrBracket = decl.find("]");
-        if(openExtattrBracket != std::string::npos and closeExtattrBracket != std::string::npos)
+        if(openExtattrBracket == 0 and closeExtattrBracket != std::string::npos)
         {
             mExtattrs = new ExtAttrMap(decl.substr(openExtattrBracket + 1,
                                                     closeExtattrBracket - openExtattrBracket - 1));

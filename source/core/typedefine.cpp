@@ -8,8 +8,10 @@ namespace NewtooWebInterfaceMapper_core
         :Definition(TYPEDEFINE, aIdl), mIdl(aIdl)
     {
         // Вырезать дополнительные параметры
+        while(decl[0] == ' ')
+            decl.erase(0, 1);
         std::size_t extAttrEnd = decl.find(']');
-        if(extAttrEnd != std::string::npos)
+        if(extAttrEnd == 0)
             decl.erase(0, extAttrEnd + 1);
         while(decl[0] == ' ')
             decl.erase(0, 1);
