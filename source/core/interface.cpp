@@ -99,7 +99,8 @@ namespace NewtooWebInterfaceMapper_core
                     continue;
 
                 std::string args = constructorArguments(extAttrMap.list()[i].name(), aIdl);
-                mSource += mInterfaceName + "::" + mInterfaceName + "("+args+")\n{\n\n}\n\n";
+                mSource += mInterfaceName + "::" + mInterfaceName + "(" +
+                        Function::removeDefaultValues(args) + ")\n{\n\n}\n\n";
                 mHeaderPublic += tab + mInterfaceName + "(" + args + ");\n";
             }
         }
@@ -120,7 +121,8 @@ namespace NewtooWebInterfaceMapper_core
                 std::string args = value.substr(argsIndex, value.size() - argsIndex - 2);
                 args = Function::convertArguments(args, aIdl);
 \
-                mSource += mInterfaceName + "::" + mInterfaceName + "("+args+")\n{\n\n}\n\n";
+                mSource += mInterfaceName + "::" + mInterfaceName + "(" +
+                        Function::removeDefaultValues(args) + ")\n{\n\n}\n\n";
                 mHeaderPublic += tab + mInterfaceName + "(" + args + ");\n";
 
                 std::string constructorName = value.substr(0, argsIndex - 1);
