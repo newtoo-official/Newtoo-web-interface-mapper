@@ -2,12 +2,15 @@
 #include "function.h"
 #include "idl.h"
 
+#include <sstream>
+
 namespace NewtooWebInterfaceMapper_core
 {
     const char doubleSpace[] = "  ";
 
     Enumeration::Enumeration(IDL* aIdl, std::string decl)
-        :Definition(ENUMERATION, aIdl), mIsTyped(false), mIdl(aIdl)
+        :Definition(ENUMERATION, aIdl), mIsTyped(false), mIdl(aIdl),
+          mUseGlobalEnumerations(aIdl->settings().useGlobalEnumerations())
     {
         // Назначить дополнительные параметры
         std::string after = decl.substr(0, decl.find('{'));
@@ -64,6 +67,14 @@ namespace NewtooWebInterfaceMapper_core
         return mEnumerationName;
     }
 
+    template<typename T>
+    std::string toHex(T i)
+    {
+      std::stringstream stream;
+      stream << std::hex << i;
+      return stream.str();
+    }
+
     void Enumeration::markdownItem(std::string& str)
     {
         while(str[0] == ' ')
@@ -86,6 +97,11 @@ namespace NewtooWebInterfaceMapper_core
 
         while(str.find(' ') != std::string::npos)
             str = str.replace(str.find(' '), 1, "_");
+
+        if(mUseGlobalEnumerations)
+        {
+            str += " = 0x" + toHex(mIdl->enumItemCounter());
+        }
     }
 
     void Enumeration::convertInner(std::string& inner)

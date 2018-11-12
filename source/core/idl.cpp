@@ -58,8 +58,8 @@ namespace NewtooWebInterfaceMapper_core
     }
 
     IDL::IDL(std::string text, NewtooWebInterfaceMapper::Settings& settings)
-        : mSettings(settings), mWarningCounter(0), mErrorCounter(0), mDefinitions(this),
-          mOriginalText(text)
+        : mSettings(settings), mWarningCounter(0), mErrorCounter(0), mEnumItemCounter(0),
+          mDefinitions(this), mOriginalText(text)
     {
         // Комментарии уже устарели и вышли из употребления, но всё равно следует удалить
         checkForCommentaries(text);
@@ -282,6 +282,12 @@ namespace NewtooWebInterfaceMapper_core
     {
         alert(WarningPrefix + message);
         mWarningCounter++;
+    }
+
+    unsigned long IDL::enumItemCounter()
+    {
+        mEnumItemCounter++;
+        return mEnumItemCounter - 1;
     }
 
     DefinitionList& IDL::definitions()

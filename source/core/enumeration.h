@@ -23,5 +23,7 @@ namespace NewtooWebInterfaceMapper_core
         std::string mEnumerationName;
         std::string mConvertedInner;
         IDL* mIdl;
+
+        bool mUseGlobalEnumerations;
     };
 }

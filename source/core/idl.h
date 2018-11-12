@@ -35,6 +35,8 @@ namespace NewtooWebInterfaceMapper_core
         void error(std::string message);
         void warning(std::string message);
 
+        unsigned long enumItemCounter();
+
         DefinitionList& definitions();
 
         unsigned long getLine(std::string fragment);
@@ -50,6 +52,7 @@ namespace NewtooWebInterfaceMapper_core
 
         unsigned short mWarningCounter;
         unsigned short mErrorCounter;
+        unsigned long mEnumItemCounter;
 
         std::string mHeader;
         std::string mSource;

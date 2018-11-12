@@ -2,13 +2,14 @@
 
 namespace NewtooWebInterfaceMapper
 {
-    Settings::Settings() : mNamespace(initialNamespace),
-        mExceptionTemplateClass(initialExceptionTemplateClass),
-        mStringPointerClass(initialStringPointerClass),
-        mInterfaceLanguage(initialInterfaceLanguage),
-        mSequence(initialSequence),
-        mExceptionOrVoid(initialExceptionOrVoid),
-        mArray(initialArray)
+    Settings::Settings() : mNamespace(InitialNamespace),
+        mExceptionTemplateClass(InitialExceptionTemplateClass),
+        mStringPointerClass(InitialStringPointerClass),
+        mInterfaceLanguage(InitialInterfaceLanguage),
+        mSequence(InitialSequence),
+        mExceptionOrVoid(InitialExceptionOrVoid),
+        mArray(InitialArray),
+        mUseGlobalEnumerations(InitialUseGlobalEnumerations)
     {}
 
     StringItem Settings::getNamespace() const
@@ -39,10 +40,19 @@ namespace NewtooWebInterfaceMapper
     {
         return mArray;
     }
+    bool Settings::getUseGlobalEnumerations() const
+    {
+        return mUseGlobalEnumerations;
+    }
+
+    bool Settings::useGlobalEnumerations() const
+    {
+        return mUseGlobalEnumerations;
+    }
 
     bool Settings::hasNamespace()
     {
-        if(mNamespace == initialNamespace)
+        if(mNamespace == InitialNamespace)
             return false;
 
         else return true;
@@ -54,7 +64,8 @@ namespace NewtooWebInterfaceMapper
              std::string aInterfaceLanguage,
              std::string aSequence,
              std::string aExceptionOrVoid,
-             std::string aArray)
+             std::string aArray,
+             bool aUseGlobalEnumerations)
     {
         mNamespace = aNamespace;
         mExceptionTemplateClass = aExceptionTemplateClass;
@@ -63,16 +74,18 @@ namespace NewtooWebInterfaceMapper
         mSequence = aSequence;
         mExceptionOrVoid = aExceptionOrVoid;
         mArray = aArray;
+        mUseGlobalEnumerations = aUseGlobalEnumerations;
     }
 
     void Settings::resetDefaults()
     {
-        mNamespace = initialNamespace;
-        mExceptionTemplateClass = initialExceptionTemplateClass;
-        mStringPointerClass = initialStringPointerClass;
-        mInterfaceLanguage = initialInterfaceLanguage;
-        mSequence = initialSequence;
-        mExceptionOrVoid = initialExceptionOrVoid;
-        mArray = initialArray;
+        mNamespace = InitialNamespace;
+        mExceptionTemplateClass = InitialExceptionTemplateClass;
+        mStringPointerClass = InitialStringPointerClass;
+        mInterfaceLanguage = InitialInterfaceLanguage;
+        mSequence = InitialSequence;
+        mExceptionOrVoid = InitialExceptionOrVoid;
+        mArray = InitialArray;
+        mUseGlobalEnumerations = InitialUseGlobalEnumerations;
     }
 }

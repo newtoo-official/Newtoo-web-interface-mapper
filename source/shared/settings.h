@@ -6,13 +6,14 @@ namespace NewtooWebInterfaceMapper
 {
     typedef std::string StringItem;
 
-    const char initialNamespace[] = "";
-    const char initialExceptionTemplateClass[] = "RaisesException";
-    const char initialStringPointerClass[] = "DOMStringOrNull";
-    const char initialInterfaceLanguage[] = "English, US";
-    const char initialSequence[] = "Sequence";
-    const char initialExceptionOrVoid[] = "ExceptionOrVoid";
-    const char initialArray[] = "Array";
+    const char InitialNamespace[] = "";
+    const char InitialExceptionTemplateClass[] = "RaisesException";
+    const char InitialStringPointerClass[] = "DOMStringOrNull";
+    const char InitialInterfaceLanguage[] = "English, US";
+    const char InitialSequence[] = "Sequence";
+    const char InitialExceptionOrVoid[] = "ExceptionOrVoid";
+    const char InitialArray[] = "Array";
+    const bool InitialUseGlobalEnumerations = false;
 
     class Settings
     {
@@ -26,6 +27,9 @@ namespace NewtooWebInterfaceMapper
         StringItem getSequence() const;
         StringItem getExceptionOrVoid() const;
         StringItem getArray() const;
+        bool getUseGlobalEnumerations() const;
+
+        bool useGlobalEnumerations() const;
 
         bool hasNamespace();
 
@@ -35,7 +39,8 @@ namespace NewtooWebInterfaceMapper
                  std::string aInterfaceLanguage,
                  std::string aSequence,
                  std::string aExceptionOrVoid,
-                 std::string aArray);
+                 std::string aArray,
+                 bool aUseGlobalEnumerations);
 
         void resetDefaults();
 
@@ -47,5 +52,6 @@ namespace NewtooWebInterfaceMapper
                    mSequence,
                    mExceptionOrVoid,
                    mArray;
+        bool mUseGlobalEnumerations;
     };
 }
